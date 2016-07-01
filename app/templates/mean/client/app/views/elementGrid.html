@@ -1,0 +1,29 @@
+<md-data-table-container>
+  <table md-data-table class="md-primary"><!--md-row-select="selected" md-progress="deferred"-->
+    <thead> <!--md-order="query.order" md-trigger="onChange"--> 
+      <tr>
+		<th ng-repeat="prop in elementProperties"> {{prop.name}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr md-auto-select ng-repeat="e in elements">
+        <!--td>{{dessert.name}}</td>
+        <td>{{dessert.calories.value}}</td>
+        <td>{{dessert.fat.value | number: 1}}</td>
+        <td>{{dessert.carbs.value}}</td>
+        <td>{{dessert.protein.value | number: 1}}</td>
+        <td style="background:red">{{dessert.sodium.value}}</td>
+        <td show-unit>{{dessert.calcium.value}}</td>
+        <td show-unit>{{dessert.iron.value}}</td>
+		<td>{{dessert.calories.value}}</td>
+        <td>{{dessert.fat.value | number: 1}}</td>
+        <td>{{dessert.carbs.value}}</td>
+        <td>{{dessert.protein.value | number: 1}}</td>
+        <td>{{dessert.sodium.value}}</td>
+        <td show-unit>{{dessert.calcium.value}}</td>
+        <td show-unit>{{dessert.iron.value}}</td-->
+		<td ng-repeat="prop in elementProperties">{{e[prop]}}</td>
+      </tr>
+    </tbody>
+  </table>
+  </md-data-table-container>

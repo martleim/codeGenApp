@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html data-ng-app="codeGenApp">
+<head>
+    <title>CodeGen</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- JS externos -->
+    <link rel="stylesheet" href="http://getbootstrap.com/dist/css/bootstrap.min.css"/>
+    <!-- CSS locales -->
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+<body data-ng-cloak="" init="init()">
+
+    <header class="navbar navbar-inner navbar-fixed-top">
+    <div class="nav-container" data-collapse="isCollapsed">
+
+                <!-- With menu-highlighter directive -->
+                <ul class="nav navbar-nav nav-pills navBarPadding"
+                    data-menu-highlighter data-highlight-class-name="active">
+                    <li><a href="#/application">Aplicacion</a></li>
+					<li><a href="#/entities">Entidades</a></li>
+                    <li><a href="#/generator">Generador</a></li>
+                </ul>
+				<div style="float: right;margin: 8px;" ng-controller="ModelController">
+				<label class="cabinet btn btn-primary"> 
+					Cargar Modelo
+					<input type="file" ng-click="loadModelClick()" id="loadModelClick" class="file" onchange=""></input>
+				</label>
+				<button type="button" class="btn btn-primary" ng-click="saveModel()">Guardar Modelo</button>
+				</div>
+            </div>
+    </header>
+    
+    <div data-ng-view="" id="ng-view"></div>
+    
+    <div id="footer" class="navbar navbar-inner navbar-fixed-bottom"></div>
+
+    <!-- JS externos -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-animate.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.11.0/ui-bootstrap.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+	<script language="javascript" src="lib/jszip.js"></script>
+	<script type="text/javascript" src="lib/si.files.js"></script>
+	<script type="text/javascript" src="script.js"></script>
+	
+    <!-- JS locales -->
+    <script src="app/grid/grid.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/types.js"></script>
+    
+    <script src="app/services/entitiesService.js"></script>
+    <script src="app/services/dataService.js"></script>
+    <script src="app/services/modalService.js"></script>
+    <script src="app/services/templateGeneratorService.js"></script>
+	<script src="app/services/fileService.js"></script>
+    <script src="app/controllers/application/applicationController.js"></script>
+	<script src="app/controllers/entities/entityEditController.js"></script>
+    <script src="app/controllers/entities/entitiesController.js"></script>
+    <script src="app/controllers/generator/generatorController.js"></script>
+	<script src="app/controllers/modelController.js"></script>
+    <script src="app/filters/nameFilter.js"></script>
+    
+
+</body>
+</html>
+
+

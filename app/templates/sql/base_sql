@@ -1,0 +1,17 @@
+<{!
+    scope.getTemplateForEntities=function(url){
+        var ret="";
+        angular.forEach(scope.entities,function(entity){
+            scope.entity=entity;
+            ret+=scope.parseAndGenerateSubTemplate(url,entity.name+".sql");
+        },scope);
+        return ret;
+    };
+    
+}>
+CREATE DATABASE <{scope.appName}>;
+ 
+USE <{scope.appName}>;
+<{
+    scope.getTemplateForEntities("entity_sql");
+}>

@@ -1,0 +1,11 @@
+@import "animations/repeat";
+@import "animations/showHide";
+@import "animations/slide";
+
+
+body.skip-animations * {
+  -webkit-transition:none!important;
+  -moz-transition:none!important;
+  -o-transition:none!important;
+  transition:none!important;
+}

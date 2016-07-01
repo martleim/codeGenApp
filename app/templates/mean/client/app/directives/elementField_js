@@ -1,0 +1,33 @@
+(function () {
+    
+    var gridTagName = "elementfield";
+    
+    angular.module("<{scope.appName}>").directive(gridTagName, function ($compile) {
+        var compile=$compile;
+		
+		function link(scope, element, attrs) {
+			var fieldName=attrs.fieldName;
+			var fieldModel=scope[fieldName];
+			required
+			name
+			ref
+			element.html
+			var type=fieldModel.type;
+			var reqField=(required?'required=true':'');
+			var ref=" ref='"+fieldModel.ref+"'"; 
+			var html="<input name='"+val+"' id='input_"+val+"' type='"+type+"' placeholder='"+val+"'"+ref+reqField+"></input>";
+			//var html ='<div ng-repeat="item in items">I should not be red</div>';
+            var e =$compile(html)(scope);
+            element.replaceWith(e);
+			
+		}
+
+		return {
+			restrict: "E",
+			link: link
+		};
+	    
+    });
+    
+})()
+

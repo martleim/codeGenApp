@@ -1,0 +1,450 @@
+$brand-primary:         #428bca !default;
+$brand-success:         #5cb85c !default;
+$brand-info:            #5bc0de !default;
+$brand-warning:         #f0ad4e !default;
+$brand-danger:          #d9534f !default;
+
+$filler_height: 30px;
+
+$cell_height: 25px;
+$cell_width: 11%;
+$expandedCell_width: 18.6%;
+
+$elementRenderer_width: 30%;
+
+$rejected_color: #AA1816;
+$running_color: #245E9B;
+$pending_color: #666666;
+$complete_color: #527D2D;
+$orange_color: #E88335;
+$yellow_color: #FFDD66;
+
+$elementrenderer_borderWidth: 2px;
+
+$arrowBox_width:25px;
+$arrowPointer_width:20px;
+
+@mixin gradientMixin($c1,$c2) {
+    $color1:lighten( $c1, 50% );
+    $color2:lighten( $c2, 50% );
+    background: -webkit-linear-gradient(left, $color1,$color2); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, $color1,$color2); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, $color1,$color2); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, $color1,$color2); /* Standard syntax */
+}
+    
+html {
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: 'Roboto'
+}
+
+#ng-view {
+    position: relative;
+    padding-top: 50px;
+}
+
+.appTitle {
+    line-height:50px;
+}
+
+.white {
+    color: white;
+}
+
+.white:hover{
+    color: white;
+}
+
+.indent {
+    margin-left:5px;
+}
+
+.gridContainer td {
+    vertical-align: middle;
+}
+
+footer {
+    margin-top:10px;
+    font-weight: bold;
+}
+
+.half{
+    width:50%;
+    position:relative;
+    float:left;
+}
+
+.timePickerContainer {
+    float:left;
+    margin: 5px;
+}
+.timePickerContainer input[type='text']{
+    width:50px;
+}
+
+.statusRow {
+    height:50px;
+}
+
+gridElement{
+    float: none;
+    overflow:hidden;
+}
+
+.gridElement {
+    min-height: 30px;
+    width: 100%;
+    overflow:hidden;
+    margin: .5%;
+}
+
+.gridElement>div.firewall {
+	background-image: url(../images/firewall.png);
+	background-repeat: no-repeat;
+}
+
+.gridElement>div.build {
+	background-image: url(../images/build.png);
+	background-repeat: no-repeat;
+}
+
+.gridElement.rejected {
+    @include gradientMixin($rejected_color,#FFFFFF);
+    border: $elementrenderer_borderWidth solid $rejected_color;
+    color: $rejected_color;
+}
+
+.gridElement.complete {
+    @include gradientMixin($complete_color,#FFFFFF);
+    border: $elementrenderer_borderWidth solid $complete_color;
+    color: $complete_color;
+}
+
+.gridElement.running {
+    @include gradientMixin($running_color,#FFFFFF);
+    border: $elementrenderer_borderWidth solid $running_color;
+    color: $running_color;
+}
+
+.gridElement.pending {
+    @include gradientMixin($pending_color,#FFFFFF);
+    border: $elementrenderer_borderWidth solid $pending_color;
+    color: $pending_color;
+}
+
+
+.gridElement>div {
+    float:left;
+    margin: .5%;
+    width: $cell_width;
+    white-space: nowrap;
+    transition: all 1s ease-in-out;
+    text-align: center;
+}
+
+
+elementrenderer>div{
+    height: $cell_height;
+    transition: all 1s ease-in-out;
+    margin:auto;
+}
+
+.rendererContainer.rejected elementrenderer>.minimizedRenderer{
+    background-color: $rejected_color;
+}
+
+.rendererContainer.complete elementrenderer>.minimizedRenderer{
+    background-color: $complete_color;
+}
+
+.rendererContainer.running elementrenderer>.minimizedRenderer{
+    background-color: $running_color;
+}
+
+.rendererContainer.pending elementrenderer>.minimizedRenderer{
+    background-color: $pending_color;
+}
+
+.rendererContainer.hiddenType elementrenderer>.minimizedRenderer{
+    width: 0px;
+    height: 0px;
+    background-color: transparent;
+	display: none;
+}
+
+.rendererContainer.rejected elementrenderer>.maximizedRenderer{
+    border: $elementrenderer_borderWidth solid $rejected_color;
+    @include gradientMixin($rejected_color,#FFFFFF);
+	color:$rejected_color;
+}
+
+.rendererContainer.complete elementrenderer>.maximizedRenderer{
+    border: $elementrenderer_borderWidth solid $complete_color;
+    @include gradientMixin($complete_color,#FFFFFF);
+	color: $complete_color;
+}
+
+.rendererContainer.running elementrenderer>.maximizedRenderer{
+    border: $elementrenderer_borderWidth solid $running_color;
+    @include gradientMixin($running_color,#FFFFFF);
+	color: $running_color;
+}
+
+.rendererContainer.pending elementrenderer>.maximizedRenderer{
+    border: $elementrenderer_borderWidth solid $pending_color;
+    @include gradientMixin($pending_color,#FFFFFF);
+	color: $pending_color;
+}
+
+.rendererContainer.hiddenType elementrenderer>.maximizedRenderer{
+	display: block;
+	box-shadow: 0px 0px 0px #ffffff;
+	background-color: transparent;
+}
+
+.rendererContainer.hiddenType elementrenderer .elementRendererTitle{
+	text-align: center;
+}
+
+.gridElement>div.filler{
+    width: 0px;
+    //width: 50%;
+    margin: 0px;
+    height: $filler_height;
+    //display: none;
+    transition: all 1s ease-in-out;
+}
+
+.gridElement.expanded>div.filler {
+    width: 50%;
+    background: transparent;
+    display: block;
+    //transform: scale(1);
+    transition: all 1s ease-in-out;
+}
+
+.gridElement.expanded>div.rendererContainer {
+    -webkit-animation-delay: 2s; /* Chrome, Safari, Opera */
+    animation-delay: 2s;
+    display: inline-block;
+    width: $expandedCell_width;
+    transition: all 1s ease-in-out;
+    //overflow: hidden;
+}
+
+.gridElement.expanded>div.rendererContainer>elementrenderer>div{
+    height: 180px;
+    overflow: hidden;
+}
+
+.elementRendererTitle{
+    text-align: left;
+    font-size: 20px;
+    padding: 5px;
+}
+
+.minimizedRenderer{
+    border: 1px solid #969696;
+    width: 30%;
+}
+
+.maximizedRenderer{
+    background-color: white;
+    box-shadow: 2px 2px 8px #888888;
+}
+
+.pieChart {    
+    width: 200px;
+    height: 100px;
+    
+}
+
+.barChart {
+    width:100%;
+    position:relative;
+    padding: 5px;
+}
+
+.barChart>div.barChartTitle{
+    width:100%;
+    position:absolute;
+}
+
+.barChart>div.barChartTitle>p{
+    margin:0px;
+    font-size: 10px;
+    color: black;
+    font-weight: bold;
+}
+
+.barChart>div.barChartTitle>p.subTitle{
+    font-weight: normal;
+    margin:0px;
+    font-size: 9px;
+}
+
+.barChart>div.barChartSection{
+    float:left;
+    height:25px;
+}
+
+.barChart>div.barChartSection.complete{
+    background-color: $complete_color;
+}
+.barChart>div.barChartSection.pending{
+    background-color: $orange_color;
+}
+
+.computerImage {
+    width: 70px;
+    height: 70px;
+    background-image: url(../images/pc.png);
+    background-repeat: no-repeat;
+    float: left;
+    margin:10px;
+}
+
+.metricContainer{
+    width: 90px;
+    height: 60px;
+    float: left;
+}
+
+.metricContainer>div{
+    float: left;
+    height: 35px;
+}
+
+.metricContainer>div.subtitle{
+    float: left;
+    font-size: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.arrowContainer{
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.arrow_box {
+	position: relative;
+    width: $arrowBox_width;
+    height: $arrowBox_width;
+}
+.arrow_box>div.arrow_body{
+    width:$arrowBox_width;
+    height: $arrowBox_width;
+    margin: auto;
+    color: black;
+    font-weight: bold;
+}
+.arrow_box.up {
+    margin-top: 10px;
+}
+.arrow_box.up:after, .arrow_box.up:before {
+	bottom: 100%;
+	left: 50%;
+	border: solid $complete_color;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+.arrow_box.up:after {
+	border-color: rgba(30, 85, 213, 0);
+	border-bottom-color: $complete_color;
+	border-width: $arrowPointer_width;
+	margin-left: -$arrowPointer_width;
+}
+.arrow_box.up>div.arrow_body{
+    background-color: $complete_color;
+    height: $arrowPointer_width;
+}
+
+.arrow_box.right {
+    margin-left: -10px;
+}
+.arrow_box.right:after, .arrow_box.right:before {
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box.right:after {
+	border-color: rgba(30, 85, 213, 0);
+	border-left-color: $yellow_color;
+	border-width: $arrowPointer_width;
+	margin-top: -$arrowPointer_width;
+}
+.arrow_box.right>div.arrow_body{
+    background-color: $yellow_color;
+}
+
+.arrow_box.down {
+    margin-top: -10px;
+}
+.arrow_box.down:after, .arrow_box.down:before {
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+}
+
+.arrow_box.down:after {
+	border-color: rgba(136, 183, 213, 0);
+	border-top-color: $rejected_color;
+	border-width: $arrowPointer_width;
+	margin-left: -$arrowPointer_width;
+}
+.arrow_box.down>div.arrow_body{
+    background-color: $rejected_color;
+}
+
+.resultMessage{
+    font-size: 22px;
+    font-weight: bold;
+	text-transform: capitalize;
+}
+
+.resultMessage.rejected {
+    color: $rejected_color;
+}
+
+.resultMessage.accepted {
+    color: $yellow_color;
+}
+
+.resultMessage.complete {
+    color: $complete_color;
+}
+
+.resultStatus{
+    text-transform: capitalize;
+}
+
+.resultStatus.rejected {
+    color: $rejected_color;
+}
+
+.resultStatus.accepted {
+    color: $yellow_color;
+}
+
+.resultStatus.complete {
+    color: $complete_color;
+}

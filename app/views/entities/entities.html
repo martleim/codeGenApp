@@ -1,0 +1,31 @@
+<div class="entities view indent">
+    <div class="container">
+        <header>
+                <h3>Listado de Entidades</h3>
+            <ul class="nav nav-pills" style="float:left">
+              <li class="active"><h5>Filtros</h5></li>
+              <li>
+                  <input type="text" name="name" class="form-control" placeholder="Nombre"  data-ng-model="nameSearchText" data-ng-change="searchTextChanged();" />
+              </li>
+            </ul>
+            <button type="button" class="btn btn-primary" style="float:right" ng-click="navigate('/entityadd')">Agregar Entity</button>
+        </header>
+        <br />
+        <br />
+        <grid config="entitiesGridConfig"></grid>
+        <ul class="nav nav-pills" style="float:right;">
+           <!-- li><a ng-click="lastPage()">&lt;</a></li>
+           <li ng-repeat="page in navigatablePages" ng-class="(page==currentPage?'active':'')"><a ng-click="pageChanged(page)">{{page}}</a></li>
+           <li><a ng-click="nextPage()">&gt;</a></li -->
+        </ul>
+        <!--textarea ng-model="entitiesString"></textarea>
+        <textarea ng-model="entitiesStringInput"></textarea-->
+		<!--label class="cabinet btn btn-primary"> 
+			Cargar Modelo
+			<input type="file" ng-click="loadModelClick()" id="loadModelClick" class="file" onchange=""></input>
+		</label>
+		<button type="button" class="btn btn-primary" ng-click="saveModel()">Guardar Modelo</button-->
+		
+        <!--button type="button" class="btn btn-primary" ng-click="importModel()">Importar</button-->
+    </div>
+</div>

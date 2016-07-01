@@ -1,0 +1,83 @@
+(function () {
+
+    var dataService = function ($http,$q,$timeout) {
+        var urls = {};
+		
+		for(var i in UrlConfig)
+			urls[i]=UrlConfig[i];
+			
+		var baseUrl=urls.baseUrl;
+		
+        authKey = null,
+        factory = {};
+			
+		factory.model=null;
+        
+        factory.login = function (email, password) {
+            return $http.post(baseUrl+loginUrl,{email:email, password:password}).then(function (results) {
+                return results.data;
+            });
+        };
+        
+        /*  REST  */
+        
+        factory.getElement = function (type, id) {
+			var elementUrl=urls[type+"Url"]+(id?("/"+id):"");
+            return $http.get(baseUrl+elementUrl).then(function (results) {
+                return results.data;
+            });
+        };
+        
+        factory.createElement = function (type, element) {
+			var elementUrl=urls[type+"Url"];
+            return $http.post(baseUrl+elementUrl,element).then(function (results) {
+                return results.data;
+            });
+        };
+        
+        factory.updateElement = function (type, id, element) {
+			var elementUrl=urls[type+"Url"];
+            return $http.put(baseUrl+elementUrl+"/"+id,element).then(function (results) {
+                return results.data;
+            });
+        };
+        
+        factory.deleteElement = function (type, id) {
+			var elementUrl=urls[type+"Url"];
+            return $http.delete(baseUrl+elementUrl+"/"+id).then(function (results) {
+                return results.data;
+            });
+        };
+        
+		/*  CRUD  */
+		
+		factory.getCrudModels = function () {
+			var crudModelsUrl=urls.crudUrl+urls.crudModelsUrl;
+			var _factory=this;
+			
+			if(_factory.model){
+				var deferred = $q.defer();
+				$timeout(function(){deferred.resolve(_factory.model);},200);
+				return deferred.promise;
+			}
+			
+            return $http.get(baseUrl+crudModelsUrl).then(function (results) {
+				_factory.model=results.data;
+                return _factory.model;
+            });
+        };
+		
+		
+        factory.initialize = function(){
+            
+        }
+		
+        return factory;
+    };
+
+    dataService.$inject = ["$http","$q","$timeout"];
+
+    angular.module('<{scope.appName}>').factory('dataService', dataService);
+
+}());
+

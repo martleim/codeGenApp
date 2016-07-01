@@ -1,0 +1,20 @@
+var Types={
+    dataTypes:[
+        {name:"int"},
+        {name:"long"},
+        {name:"decimal"},
+        {name:"varchar"},
+        {name:"text"},
+		{name:"String"},
+		{name:"Date"},
+		{name:"Object"},
+		{name:"Array"},
+		{name:"Boolean"}
+    ],
+    keyTypes:[
+        {name:null},
+        {name:"PRIMARY"},
+        {name:"UNIQUE"},
+		{name:"INDEX"}
+    ]
+};

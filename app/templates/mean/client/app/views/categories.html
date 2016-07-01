@@ -1,0 +1,85 @@
+<div class="categories view indent">
+    <div class="container">
+        <header>
+                <h3>Listado de Categorias</h3>
+            <!-- ul class="nav nav-pills" style="float:left">
+              <li class="active"><h5>Filtros</h5></li>
+              <li>
+                  <input type="text" name="name" class="form-control" placeholder="Nombre"  data-ng-model="nameSearchText" data-ng-change="searchTextChanged();" />
+              </li>
+              <li>
+                    <input type="text" name="name" class="form-control" placeholder="Direccion" data-ng-model="addressSearchText" data-ng-change="searchTextChanged();" />
+              </li>
+            </ul -->
+        </header>
+        <br />
+        <br />
+        <grid config="categoriesGridConfig"></grid>
+        <ul class="nav nav-pills" style="float:right;">
+           <li><a ng-click="lastPage()">&lt;</a></li>
+           <li ng-repeat="page in navigatablePages" ng-class="(page==currentPage?'active':'')"><a ng-click="pageChanged(page)">{{page}}</a></li>
+           <li><a ng-click="nextPage()">&gt;</a></li>
+        </ul>
+        <button class="btn btn-default" ng-click="addCategory()">Agregar</button>
+        
+    </div>
+</div>
+
+<script type="text/ng-template" id="categoryEdit.html">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>{{modalOptions.headerText}}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{modalOptions.bodyText}}</p>
+            <form name="editForm" novalidate>
+                <div class="row">
+                    <div class="col-md-2">
+                        Nombre:
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="name" class="form-control" data-ng-model="modalOptions.category.category" maxlength="50" required />
+                        <span class="errorMessage" ng-show="editForm.name.$dirty && editForm.name.$invalid">
+                            El nombre es requerido
+                        </span>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-2">
+                        Descripcion:
+                    </div>
+                    <div class="col-md-10">
+                        <textarea type="text" name="description" class="form-control" data-ng-model="modalOptions.category.description" maxlength="1000" required></textarea>
+                        <span class="errorMessage" ng-show="editForm.description.$dirty && editForm.description.$invalid">
+                            La descripcion requerida
+                        </span>
+                        <div>Restan {{1000-category.description.length}} caracteres</div>
+                    </div>
+                </div>
+				<br />
+                <div class="row">
+                    <div class="col-md-2">
+                        Imagen:
+                    </div>
+                    <div class="col-md-10">
+                        <div style="height:300px; overflow:auto;">
+							<div style="float:left;" ng-repeat="img in modalOptions.categoryImages">
+								<img src="images/map/{{img}}"></img>
+								<input type="radio" name="image" ng-value="img" ng-model="modalOptions.category.image" required />
+							</div>
+						</div>
+                        <span class="errorMessage" ng-show="editForm.image.$dirty && editForm.image.$invalid">
+                            La imagen es requerida
+                        </span>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn" data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</button>
+            <button class="btn btn-primary" data-ng-click="modalOptions.ok();" ng-disabled="editForm.$invalid || !editForm.$dirty">{{modalOptions.actionButtonText}}</button>
+        </div>
+    </div>
+</script>

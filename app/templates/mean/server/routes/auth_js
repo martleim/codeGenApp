@@ -1,0 +1,98 @@
+<{!
+    scope.getMainEntity=function(){
+		var ret={name:"empty"};
+        angular.forEach(scope.entities,function(entity){
+			if(entity.main)
+				ret=entity;
+        },scope);
+        return ret;
+    };
+    
+}>
+var express         = require("express");
+var passport        = require('passport');
+var router          = express.Router();
+var path            = "";
+
+var Main     = require("../models/<{scope.getMainEntity().name;}>");
+
+router.get(path+'/login', function(req, res) {
+    //res.render('login.ejs', { message: req.flash('loginMessage') });
+});
+
+function authenticatedCallback(_req, _res, _next) {
+    var req=_req;
+    var res=_res;
+    var next=_next;
+    
+    return function(err, user, info) {
+        if (err || info) { 
+            return res.send({ Result:"ERROR", message: (err || info) });
+        }
+        var mains=Main.find({users:{ $elemMatch:{ user:{email:user.email} } } });
+        return res.send({ Result:"OK" });
+    }
+}
+
+function signedUpCallback(_req, _res, _next) {
+    var req=_req;
+    var res=_res;
+    var next=_next;
+    
+    return function(err, user, info) {
+        if (err || info) { 
+            return res.send({ Result:"ERROR", message: (err || info) });
+        }
+        /*if (!user) {
+            return res.send('ERRER 2'); 
+        }
+        req.logIn(user, function(err) {
+            if (err) {
+                return res.send('ERRER LOGIN 3'); 
+            }
+            return res.send('NO ERRER LOGIN 4'); 
+        });*/
+        return res.send({ Result:"OK" });
+    }
+}
+    
+
+router.post(path+'/login', function(req, res, next) {
+    passport.authenticate('local-login', 
+        authenticatedCallback(req, res, next)
+        )(req, res, next);
+    
+});
+        
+
+// process the signup form
+router.post(path+'/signup', function(req, res, next) {
+    passport.authenticate('local-signup', 
+        signedUp(req, res, next)
+        )(req, res, next);
+});
+
+
+// facebook -------------------------------
+router.get(path+'/facebook/callback', function(req, res, next) {
+    passport.authenticate('facebook', 
+        authenticatedCallback(req, res, next)
+        )(req, res, next);
+});
+
+// twitter --------------------------------
+router.get(path+'/twitter/callback', function(req, res, next) {
+    passport.authenticate('twitter', 
+        authenticatedCallback(req, res, next)
+        )(req, res, next);
+});
+
+
+// google ---------------------------------
+router.get(path+'/google/callback', function(req, res, next) {
+    passport.authenticate('google', 
+        authenticatedCallback(req, res, next)
+        )(req, res, next);
+});
+
+module.exports = router;

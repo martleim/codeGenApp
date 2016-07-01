@@ -1,0 +1,67 @@
+extends layout
+
+block content
+    h1=title
+    script(src='/socket.io/socket.io.js')
+    script(src='/javascripts/crud.js')
+    script(src='/javascripts/socket.js')
+    script(src='/javascripts/WindowManager.js')
+
+    // Wrapper
+    #wrapper
+
+        // ELEMENT INFO
+        #elementInfo
+            h2 Element Info
+            p
+            -for(var val in model.paths)
+                - if ( val.indexOf("_")!=0 )
+                    strong=(val?val+" :":"")
+                        span(id=('span_'+val))
+                    br
+                    
+                
+        // /ELEMENT INFO
+
+        // ELEMENT LIST
+        h2 Element List
+        #elementList
+            table
+                thead
+                    -for(var val in model.paths)
+                        - if ( val.indexOf("_")!=0 )
+                            th=val
+                    th=actions
+                tbody
+        // /ELEMENT LIST
+
+        // ADD ELEMENT
+        h2 Add Element
+        pre=((false)?JSON.stringify(model.paths):"")
+        #addElement
+            form(id="formFields")
+                input(id=('input__id'),type='hidden', name='_id')
+                fieldset(id="fields")
+                    - var getInput = function(paths,val){ 
+                    - var type=paths[val].instance;var ref='';var reqField=((paths[val].options && paths[val].options.required)?'required=true':'');
+                    - if(paths[val].constructor.toString().indexOf("Date")>0){type="Date";}
+                    - else if(paths[val].options && paths[val].options.ref){
+                    - ref=" ref='"+paths[val].options.ref+"'"; }
+                    - else if(paths[val].options && paths[val].options.type instanceof Array && paths[val].options.type[0] && paths[val].options.type[0].ref){
+                    - ref=" ref='["+paths[val].options.type[0].ref+"]'"; }
+                    - var input="input name='"+val+"' id='input_"+val+"' type='"+type+"' placeholder='"+val+"'"+ref+reqField;
+                    - return input;
+                    - }
+                    - for(var val in model.paths)
+                            - if ( val.indexOf("_")!=0 )
+                                br
+                                #{getInput(model.paths,val)}
+                
+                br
+                button#btnAddElement(type="button") Add Element
+                button#btnEditElement(type="button")(style='display:none') Edit Element
+                
+                
+        // /ADD ELEMENT
+
+    // /WRAPPER

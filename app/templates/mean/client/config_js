@@ -1,0 +1,26 @@
+<{!
+    scope.getTemplateForEntities=function(){
+        var ret="";
+		var ents=[];
+		var _scope=this;
+        angular.forEach(scope.entities,function(entity){
+			var capEnt=_scope.capital(entity.name);
+            ents.push("crud"+capEnt+"Url:\""+capEnt+"\"");
+			ents.push(entity.name+"Url:\""+entity.name+"\"");
+        },scope);
+		
+		ret+=ents.join(",\n\t");
+        
+        return ret;
+    };
+    
+}>//App server url configuration
+
+var UrlConfig= {
+    baseUrl: "http://localhost:8081/api/",
+	crudUrl: "crud/",
+	crudModelsUrl: "models/aa",
+    <{scope.getTemplateForEntities()}>
+    ,loginUrl:"login"
+}
+console.log("CONFIGURATION: "+JSON.stringify(UrlConfig));

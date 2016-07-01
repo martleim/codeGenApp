@@ -1,0 +1,82 @@
+(function () {
+
+    var authFactory = function ($http, $rootScope) {
+        
+        var baseUrl = UrlConfig.baseUrl,
+        categoriesUrl = UrlConfig.categoriesUrl,
+        mapLocationsUrl = UrlConfig.mapLocationsUrl,
+        loginUrl = UrlConfig.loginUrl,
+        authKey = null,
+        factory = {
+            user: {
+                isAuthenticated: false
+            }
+        };
+
+        
+        
+        factory.formatRequest=function(data, getHeaders){
+			var headers = getHeaders();
+			headers[ "content-Type" ] = "application/json;charset=UTF-8";//"application/x-www-form-urlencoded";
+			headers[ "accept" ] = "application/json;charset=UTF-8";//"application/x-www-form-urlencoded";
+            headers[ "Authorization" ] = authKey;
+			
+			/*if ( ! angular.isObject( data ) ) {
+				return( ( data == null ) ? "" : data.toString() );
+			}
+
+			var buffer = [];
+			for ( var name in data ) {
+				if ( ! data.hasOwnProperty( name ) ) {
+					continue;
+				}
+				var value = data[ name ];
+				buffer.push( encodeURIComponent( name ) +"=" +encodeURIComponent( ( value == null ) ? "" : value ) );
+			}
+
+			var source = buffer.join( "&" ).replace( /%20/g, "+" );
+
+			return( source );*/
+			return( JSON.stringify(data) );
+		}
+        $http.defaults.transformRequest=factory.formatRequest;
+		$http.defaults.withCredentials=true;
+        
+        factory.login = function (email, password) {
+			return $http.post(baseUrl+loginUrl,{email:email, password:password}).then(
+                function (results) {
+                    var loggedIn = !results.data.error;
+                    authKey=results.data.apiKey;
+                    changeAuth(loggedIn);
+                    return loggedIn;
+                });
+        };
+
+        factory.logout = function () {
+            return $http.post(baseUrl + "logout").then(
+                function (results) {
+                    var loggedIn = !results.data.status;
+                    changeAuth(loggedIn);
+                    return loggedIn;
+                });
+        };
+
+        factory.redirectToLogin = function () {
+            $rootScope.$broadcast("redirectToLogin", null);
+        };
+
+        function changeAuth(loggedIn) {
+            factory.user.isAuthenticated = loggedIn;
+            authKey=(loggedIn)?authKey:null;
+            $rootScope.$broadcast("loginStatusChanged", loggedIn);
+        }
+
+        return factory;
+    };
+
+    authFactory.$inject = ["$http", "$rootScope"];
+
+    angular.module('<{scope.appName}>').factory("authService", authFactory);
+
+}());
+

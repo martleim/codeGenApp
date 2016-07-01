@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manager</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="sass/bootstrap.css"/>
+    <link rel="stylesheet" href="sass/animations.css"/>
+    <link rel="stylesheet" href="sass/styles.css"/>
+    
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    
+</head>
+<body data-ng-cloak="">
+
+    <header class="navbar navbar-inner navbar-fixed-top">
+    
+        <div class="nav-container" data-collapse="isCollapsed">
+
+                <!-- With menu-highlighter directive -->
+                <ul class="nav navbar-nav nav-pills navBarPadding"
+                    data-menu-highlighter data-highlight-class-name="active">
+                    <li><a href="#/categories">Categorias</a></li>
+                    <li><a href="#/map">Mapa</a></li>
+                    <li><a href="#/about">Acerca de</a></li>
+                </ul>
+
+            </div>
+        
+    </header>
+    
+    <div class="slide-animation-container">
+        <div data-ng-view="" id="ng-view" class="slide-animation"></div>
+    </div>
+    
+    <div id="footer" class="navbar navbar-inner navbar-fixed-bottom"></div>
+
+    <!-- JS externos -->
+    <script src="http://rawgit.com/nnnick/Chart.js/master/Chart.min.js"></script>
+    <script src="http://rawgit.com/javascript/augment/master/augment.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    
+    <script src="http://requirejs.org/docs/release/2.1.14/minified/require.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.6/angular-mocks.js"></script>
+	<!--script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-0.11.0.js"></script>
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script-->
+    
+	
+    <script src="config.js"></script>
+    <script src="main.js"></script>
+    
+    <script src="app/app.js"></script>
+    
+    <script src="app/directives/map/map.js"></script>
+    <script src="app/directives/grid/grid.js"></script>
+    <script src="app/directives/grid/gridElement.js"></script>
+    <script src="app/directives/grid/elementRenderer.js"></script>
+    <script src="app/directives/pieChart/pieChart.js"></script>
+    
+    <script src="app/services/dataService.js"></script>
+    <script src="app/services/modalService.js"></script>
+    
+    <script src="app/controllers/map/mapController.js"></script>
+    <script src="app/controllers/categories/categoriesController.js"></script>
+    <script src="app/controllers/about/aboutController.js"></script>
+        
+    <script src="app/services/dataMocksService.js"></script>
+    
+    <script src="app/animations/listAnimations.js"></script>
+    
+
+</body>
+</html>
+
+

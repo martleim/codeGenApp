@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title><{scope.appTitle}></title>
+    <link rel="stylesheet" href="css/style.css">
+
+  </head>
+
+  <body>
+
+    <html lang="en" ng-app="<{scope.appName}>">
+  <head>
+    <link rel="stylesheet" href="https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc6/angular-material.css" />
+    <link rel="stylesheet" href="http://danielnagy.me/md-data-table/dependencies/md-data-table.min.css"/>
+	
+  </head>
+  <body layout="row" ng-controller="AppController">
+    <md-sidenav ng-include="'app/views/navigation.html'" ng-controller="NavbarController" layout="column" class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')"></md-sidenav>
+    <div layout="column" class="relative" layout-fill role="main" data-ng-view="" id="ng-view" class="slide-animation"></div>
+    
+	<!-- Angular Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+
+    <!-- Angular Material -->
+    <script src="https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc6/angular-material.js"></script>
+	<script src="http://danielnagy.me/md-data-table/dependencies/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+    <!-- Angular Material icons -->
+    <script src="http://cdn.jsdelivr.net/angular-material-icons/0.6.0/angular-material-icons.min.js"></script>
+
+    <!-- additional dependencies -->
+    <script src="https://rawgit.com/monicao/angular-uuid4/master/angular-uuid4.min.js"></script>
+
+    <!-- mdDataTable -->
+    <script src="http://danielnagy.me/md-data-table/dependencies/md-data-table.min.js"></script>
+	
+	<!-- WYSISWYG -->
+ 	<!--script src='http://textangular.com/dist/textAngular-rangy.min.js'></script>
+    <script src='http://textangular.com/dist/textAngular-sanitize.min.js'></script>
+    <script src='http://textangular.com/dist/textAngular.min.js'></script-->
+	
+	<script src="config.js"></script>
+	<script src="app/app.js"></script>
+	
+	<script src="app/services/authService.js"></script> 
+	<script src="app/services/dataService.js"></script> 
+	<!--script src="app/services/httpInterceptorService.js"></script>
+	<script src="app/services/dataMocksService.js"></script-->
+	
+	<script src="app/controllers/loginController.js"></script> 
+	<script src="app/controllers/navBarController.js"></script> 
+	<script src="app/controllers/appController.js"></script> 
+	<script src="app/controllers/dialogController.js"></script> 
+	<script src="app/controllers/elementController.js"></script> 
+	<script src="app/controllers/listBottomSheetController.js"></script> 
+	
+	<script src="app/directives/elementfield.js"></script> 
+	
+  </body>
+</html>
+    
+  </body>
+</html>

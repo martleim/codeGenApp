@@ -1,0 +1,154 @@
+(function () {
+
+    var ElementController = function ($scope, $location, $routeParams, dataService, $mdDialog) {
+
+        $scope.elements = null;
+		
+		$scope.data={selectedIndex:0};
+    
+        $scope.addressSearchText = null;
+        $scope.nameSearchText = null;
+		var type=$routeParams.type;
+		$scope.type=type;
+		
+		$scope.elementProperties=[];
+        
+		dataService.getCrudModels().then(function(rets){
+			$scope.elementProperties=rets[$scope.type];
+		});
+		
+		
+        //paging
+        $scope.totalRecords = 0;
+        $scope.pageSize = 10;
+        $scope.currentPage = 1;
+        $scope.navigatablePages=[];
+        $scope.totalShownPages=6;
+        $scope.totalPages=0;
+
+        $scope.pageChanged = function (page) {
+            if(page>=1 && page<=$scope.totalPages){
+                $scope.currentPage = page;
+                $scope.refreshElements();
+            }
+        };
+        
+        $scope.nextPage = function () {
+            $scope.pageChanged($scope.currentPage+1);
+        };
+        
+        $scope.lastPage = function () {
+            $scope.pageChanged($scope.currentPage-1);
+        };
+
+        $scope.deleteElement = function (element) {
+            
+            var name = element.element;
+
+            var modalOptions = {
+                closeButtonText: 'Cancelar',
+                actionButtonText: 'Eliminar '+type,
+                headerText: 'Eliminar ' + name + '?',
+                bodyText: 'Esta seguro que desea eliminar esta Categoria?'
+            };
+
+            modalService.showModal({}, modalOptions).then(function (result) {
+                if (result === 'ok') {
+                    dataService.deleteElement(type,element.id);
+                    $scope.refreshElements();
+                }
+            });
+        };
+        
+        $scope.addElement=function(){
+            $scope.openEditModal();
+        };
+        
+        $scope.editElement=function(element){
+            $scope.openEditModal(element);
+        };
+        
+        $scope.openEditModal=function(element){
+            var name = "";
+            if(element){
+                name=element.element;
+                element=angular.copy(element);
+            }else{
+                element={};
+            }
+            
+            var modalOpts = {
+                // backdrop: true,
+                keyboard: true,
+                modalFade: true,
+                templateUrl: 'elementEdit.html'
+            };
+            
+            var modalOptions = {
+                closeButtonText: 'Cancelar',
+                actionButtonText: 'Aceptar',
+                headerText: 'Editando ' + name,
+                bodyText: '',
+                element:element,
+				elementImages:[]
+            };
+			
+			dataService.getElementImages().then(function(ret){
+				modalOptions.elementImages=ret;
+				
+				modalService.showModal(modalOpts, modalOptions).then(function (result) {
+                if (result === 'ok') {
+                    if(name==""){
+                        dataService.createElement(modalOptions.element.element, modalOptions.element.description, modalOptions.element.image).then($scope.refreshElements);
+                    }else{
+                        dataService.updateElement(modalOptions.element.id, modalOptions.element.element, modalOptions.element.description, modalOptions.element.image).then($scope.refreshElements());
+                    }
+                }
+            });      
+				
+			})
+
+            
+        };
+            
+
+        $scope.navigate = function (url) {
+            $location.path(url);
+        };
+
+        $scope.refreshElements = function(){
+            dataService.getElement(type).then(function(p) {
+                //$scope.updateElement();
+                $scope.elements=p.elements;
+            });
+        }
+        
+        $scope.setNavigatablePages = function(){
+            $scope.totalPages=Math.ceil(this.totalRecords/this.pageSize)-1;
+            var start=this.currentPage-($scope.totalShownPages/2);
+            start=(start<1)?1:start;
+            var end=start+($scope.totalShownPages-1);
+            if(end>$scope.totalPages){
+                start-=(end-$scope.totalPages);
+            }
+            var pages=[];
+            for(var i=0;i<$scope.totalShownPages;i++){
+                pages.push(start+i);
+            }
+            $scope.navigatablePages=pages;
+        }
+        
+        
+
+        function init() {
+            $scope.refreshElements();
+        }
+            
+        init();
+    };
+
+    ElementController.$inject = ['$scope', '$location', '$routeParams', 'dataService', '$mdDialog'];
+
+    angular.module("<{scope.appName}>").controller('ElementController', ElementController);
+
+}());

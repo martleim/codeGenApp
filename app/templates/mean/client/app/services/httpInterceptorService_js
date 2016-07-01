@@ -1,0 +1,35 @@
+(function () {
+
+    var httpInterceptor = function ($rootScope) {
+        var factory = {};
+			
+        //$httpProvider.interceptors
+        
+        factory.request = function (config) {
+            return config;
+        }
+        
+        factory.response = function (response) {
+            factory.checkResponse(response);
+            return response;
+        }
+        
+        factory.checkResponse=function(response){
+            if(response.data.error)
+                $rootScope.$broadcast("serviceError", {message:response.data.message});
+        }
+        
+		
+        return factory;
+    };
+
+    //httpInterceptor.$inject = ["$http","$httpProvider"];
+
+    angular.module('<{scope.appName}>').factory('httpInterceptor', ['$rootScope', httpInterceptor]);
+    
+    angular.module('<{scope.appName}>').config(function ($httpProvider) {
+        $httpProvider.interceptors.push("httpInterceptor");
+    });
+
+}());
+

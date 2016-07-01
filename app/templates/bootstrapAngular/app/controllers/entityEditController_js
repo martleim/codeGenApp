@@ -1,0 +1,14 @@
+<{!
+    scope.getTemplateForEntities=function(url){
+        var ret="";
+        angular.forEach(scope.entities,function(entity){
+            scope.entity=entity;
+            ret+=scope.parseSubTemplate(url);
+        },scope);
+        return ret;
+    };
+    
+}>
+<{
+    scope.getTemplateForEntities("app/controllers/subEntityEditController_js");
+}>

@@ -1,0 +1,48 @@
+var express = require("express");
+var router = express.Router();
+var <{scope.capital(scope.entity.name)}>     = require("../models/<{(scope.entity.name)}>");
+var path = "";
+
+router.route(path).get(function(req, res) {
+    <{scope.capital(scope.entity.name)}>.find(function(err, items) {
+        if (err) {
+        return res.send(err);
+        }
+        res.json(items);
+    });
+});
+
+router.route(path).post(function(req, res) {
+    
+    var <{(scope.entity.name)}> = new <{scope.capital(scope.entity.name)}>(req.body);
+
+    <{(scope.entity.name)}>.save(function(err) {
+        if (err) {
+            return res.send(err);
+        }
+        res.send({ message: 'OK' });
+    });
+});
+
+router.route(path+"/:id").put(function(req, res) {
+    var <{(scope.entity.name)}>ToUpdate = req.body;
+    console.log("PUT "+req.params.id+" "+JSON.stringify(req.body));
+    <{scope.capital(scope.entity.name)}>.update({ _id: req.params.id }, <{(scope.entity.name)}>ToUpdate, function(err, result) {
+        res.send((result === 1) ? { msg: "" } : { message: "error: " + err });
+    });
+});
+
+router.route(path+"/:id").get(function(req, res) {
+    <{scope.capital(scope.entity.name)}>.findOne({ _id: req.params.id}, function (err, item) {
+        res.json(item);
+    });
+});
+
+router.route(path+"/:id").delete(function(req, res) {
+    var <{(scope.entity.name)}>ToDelete = req.params.id;
+    <{scope.capital(scope.entity.name)}>.remove({_id:<{(scope.entity.name)}>ToDelete}, function(err, result) {
+        res.send((result === 1) ? { msg: "" } : { message: "error: " + err });
+    });
+});
+
+module.exports = router;

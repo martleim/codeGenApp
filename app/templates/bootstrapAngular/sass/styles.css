@@ -1,0 +1,660 @@
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto Light'), local('Roboto-Light'), url(https://themes.googleusercontent.com/static/fonts/roboto/v9/Pru33qjShpZSmG3z6VYwnT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff'); }
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto Regular'), local('Roboto-Regular'), url(https://themes.googleusercontent.com/static/fonts/roboto/v9/Xyjz-jNkfiYuJf8UC3Lizw.woff) format('woff'); }
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  src: local('Roboto Medium'), local('Roboto-Medium'), url(https://themes.googleusercontent.com/static/fonts/roboto/v9/oOeFwZNlrTefzLYmlVV1UD8E0i7KZn-EPnyo3HZu7kw.woff) format('woff'); }
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Roboto Bold'), local('Roboto-Bold'), url(https://themes.googleusercontent.com/static/fonts/roboto/v9/97uahxiqZRoncBaCEI3aWz8E0i7KZn-EPnyo3HZu7kw.woff) format('woff'); }
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 300;
+  src: local('Roboto Light Italic'), local('Roboto-LightItalic'), url(https://themes.googleusercontent.com/static/fonts/roboto/v9/7m8l7TlFO-S3VkhHuR0at9Ih4imgI8P11RFo6YPCPC0.woff) format('woff'); }
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Roboto Italic'), local('Roboto-Italic'), url(https://themes.googleusercontent.com/static/fonts/roboto/v9/dFWsweFqlD8ExfyN7Gh_GPesZW2xOQ-xsNqO47m55DA.woff) format('woff'); }
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 500;
+  src: local('Roboto Medium Italic'), local('Roboto-MediumItalic'), url(https://themes.googleusercontent.com/static/fonts/roboto/v9/OLffGBTaF0XFOW1gnuHF0dIh4imgI8P11RFo6YPCPC0.woff) format('woff'); }
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 700;
+  src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'), url(https://themes.googleusercontent.com/static/fonts/roboto/v9/t6Nd4cfPRhZP44Q5QAjcC9Ih4imgI8P11RFo6YPCPC0.woff) format('woff'); }
+
+html {
+  overflow-y: scroll;
+  overflow-x: hidden; }
+
+body {
+  font-family: 'Roboto'; }
+
+#ng-view {
+  position: relative;
+  padding-top: 50px; }
+
+.appTitle {
+  line-height: 50px; }
+
+.white {
+  color: white; }
+
+.white:hover {
+  color: white; }
+
+.indent {
+  margin-left: 5px; }
+
+.gridContainer td {
+  vertical-align: middle; }
+
+footer {
+  margin-top: 10px;
+  font-weight: bold; }
+
+.half {
+  width: 50%;
+  position: relative;
+  float: left; }
+
+.timePickerContainer {
+  float: left;
+  margin: 5px; }
+
+.timePickerContainer input[type='text'] {
+  width: 50px; }
+
+.statusRow {
+  height: 50px; }
+
+gridElement {
+  float: none;
+  overflow: hidden; }
+
+.gridElement {
+  min-height: 30px;
+  width: 100%;
+  overflow: hidden;
+  margin: 0.5%; }
+
+.gridElement > div.firewall {
+  background-image: url(../images/firewall.png);
+  background-repeat: no-repeat; }
+
+.gridElement > div.build {
+  background-image: url(../images/build.png);
+  background-repeat: no-repeat; }
+
+.gridElement.rejected {
+  background: -webkit-linear-gradient(left, #f8c7c7, #ffffff);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #f8c7c7, #ffffff);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #f8c7c7, #ffffff);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #f8c7c7, #ffffff);
+  /* Standard syntax */
+  border: 2px solid #AA1816;
+  color: #AA1816; }
+
+.gridElement.complete {
+  background: -webkit-linear-gradient(left, #d3e8c1, #ffffff);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #d3e8c1, #ffffff);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #d3e8c1, #ffffff);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #d3e8c1, #ffffff);
+  /* Standard syntax */
+  border: 2px solid #527D2D;
+  color: #527D2D; }
+
+.gridElement.running {
+  background: -webkit-linear-gradient(left, #cbdff3, #ffffff);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #cbdff3, #ffffff);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #cbdff3, #ffffff);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #cbdff3, #ffffff);
+  /* Standard syntax */
+  border: 2px solid #245E9B;
+  color: #245E9B; }
+
+.gridElement.pending {
+  background: -webkit-linear-gradient(left, #e6e6e6, #ffffff);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #e6e6e6, #ffffff);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #e6e6e6, #ffffff);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #e6e6e6, #ffffff);
+  /* Standard syntax */
+  border: 2px solid #666666;
+  color: #666666; }
+
+.gridElement > div {
+  float: left;
+  margin: 0.5%;
+  width: 11%;
+  white-space: nowrap;
+  transition: all 1s ease-in-out;
+  text-align: center; }
+
+elementrenderer > div {
+  height: 25px;
+  transition: all 1s ease-in-out;
+  margin: auto; }
+
+.rendererContainer.rejected elementrenderer > .minimizedRenderer {
+  background-color: #AA1816; }
+
+.rendererContainer.complete elementrenderer > .minimizedRenderer {
+  background-color: #527D2D; }
+
+.rendererContainer.running elementrenderer > .minimizedRenderer {
+  background-color: #245E9B; }
+
+.rendererContainer.pending elementrenderer > .minimizedRenderer {
+  background-color: #666666; }
+
+.rendererContainer.hiddenType elementrenderer > .minimizedRenderer {
+  width: 0px;
+  height: 0px;
+  background-color: transparent;
+  display: none; }
+
+.rendererContainer.rejected elementrenderer > .maximizedRenderer {
+  border: 2px solid #AA1816;
+  background: -webkit-linear-gradient(left, #f8c7c7, #ffffff);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #f8c7c7, #ffffff);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #f8c7c7, #ffffff);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #f8c7c7, #ffffff);
+  /* Standard syntax */
+  color: #AA1816; }
+
+.rendererContainer.complete elementrenderer > .maximizedRenderer {
+  border: 2px solid #527D2D;
+  background: -webkit-linear-gradient(left, #d3e8c1, #ffffff);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #d3e8c1, #ffffff);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #d3e8c1, #ffffff);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #d3e8c1, #ffffff);
+  /* Standard syntax */
+  color: #527D2D; }
+
+.rendererContainer.running elementrenderer > .maximizedRenderer {
+  border: 2px solid #245E9B;
+  background: -webkit-linear-gradient(left, #cbdff3, #ffffff);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #cbdff3, #ffffff);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #cbdff3, #ffffff);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #cbdff3, #ffffff);
+  /* Standard syntax */
+  color: #245E9B; }
+
+.rendererContainer.pending elementrenderer > .maximizedRenderer {
+  border: 2px solid #666666;
+  background: -webkit-linear-gradient(left, #e6e6e6, #ffffff);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #e6e6e6, #ffffff);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #e6e6e6, #ffffff);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #e6e6e6, #ffffff);
+  /* Standard syntax */
+  color: #666666; }
+
+.rendererContainer.hiddenType elementrenderer > .maximizedRenderer {
+  display: block;
+  box-shadow: 0px 0px 0px #ffffff;
+  background-color: transparent; }
+
+.rendererContainer.hiddenType elementrenderer .elementRendererTitle {
+  text-align: center; }
+
+.gridElement > div.filler {
+  width: 0px;
+  margin: 0px;
+  height: 30px;
+  transition: all 1s ease-in-out; }
+
+.gridElement.expanded > div.filler {
+  width: 50%;
+  background: transparent;
+  display: block;
+  transition: all 1s ease-in-out; }
+
+.gridElement.expanded > div.rendererContainer {
+  -webkit-animation-delay: 2s;
+  /* Chrome, Safari, Opera */
+  animation-delay: 2s;
+  display: inline-block;
+  width: 18.6%;
+  transition: all 1s ease-in-out; }
+
+.gridElement.expanded > div.rendererContainer > elementrenderer > div {
+  height: 180px;
+  overflow: hidden; }
+
+.elementRendererTitle {
+  text-align: left;
+  font-size: 20px;
+  padding: 5px; }
+
+.minimizedRenderer {
+  border: 1px solid #969696;
+  width: 30%; }
+
+.maximizedRenderer {
+  background-color: white;
+  box-shadow: 2px 2px 8px #888888; }
+
+.pieChart {
+  width: 200px;
+  height: 100px; }
+
+.barChart {
+  width: 100%;
+  position: relative;
+  padding: 5px; }
+
+.barChart > div.barChartTitle {
+  width: 100%;
+  position: absolute; }
+
+.barChart > div.barChartTitle > p {
+  margin: 0px;
+  font-size: 10px;
+  color: black;
+  font-weight: bold; }
+
+.barChart > div.barChartTitle > p.subTitle {
+  font-weight: normal;
+  margin: 0px;
+  font-size: 9px; }
+
+.barChart > div.barChartSection {
+  float: left;
+  height: 25px; }
+
+.barChart > div.barChartSection.complete {
+  background-color: #527D2D; }
+
+.barChart > div.barChartSection.pending {
+  background-color: #E88335; }
+
+.computerImage {
+  width: 70px;
+  height: 70px;
+  background-image: url(../images/pc.png);
+  background-repeat: no-repeat;
+  float: left;
+  margin: 10px; }
+
+.metricContainer {
+  width: 90px;
+  height: 60px;
+  float: left; }
+
+.metricContainer > div {
+  float: left;
+  height: 35px; }
+
+.metricContainer > div.subtitle {
+  float: left;
+  font-size: 10px;
+  text-align: center;
+  width: 100%; }
+
+.arrowContainer {
+  margin-top: 20px;
+  margin-left: 30px; }
+
+.arrow_box {
+  position: relative;
+  width: 25px;
+  height: 25px; }
+
+.arrow_box > div.arrow_body {
+  width: 25px;
+  height: 25px;
+  margin: auto;
+  color: black;
+  font-weight: bold; }
+
+.arrow_box.up {
+  margin-top: 10px; }
+
+.arrow_box.up:after, .arrow_box.up:before {
+  bottom: 100%;
+  left: 50%;
+  border: solid #527D2D;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none; }
+
+.arrow_box.up:after {
+  border-color: rgba(30, 85, 213, 0);
+  border-bottom-color: #527D2D;
+  border-width: 20px;
+  margin-left: -20px; }
+
+.arrow_box.up > div.arrow_body {
+  background-color: #527D2D;
+  height: 20px; }
+
+.arrow_box.right {
+  margin-left: -10px; }
+
+.arrow_box.right:after, .arrow_box.right:before {
+  left: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none; }
+
+.arrow_box.right:after {
+  border-color: rgba(30, 85, 213, 0);
+  border-left-color: #FFDD66;
+  border-width: 20px;
+  margin-top: -20px; }
+
+.arrow_box.right > div.arrow_body {
+  background-color: #FFDD66; }
+
+.arrow_box.down {
+  margin-top: -10px; }
+
+.arrow_box.down:after, .arrow_box.down:before {
+  top: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none; }
+
+.arrow_box.down:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-top-color: #AA1816;
+  border-width: 20px;
+  margin-left: -20px; }
+
+.arrow_box.down > div.arrow_body {
+  background-color: #AA1816; }
+
+.resultMessage {
+  font-size: 22px;
+  font-weight: bold;
+  text-transform: capitalize; }
+
+.resultMessage.rejected {
+  color: #AA1816; }
+
+.resultMessage.accepted {
+  color: #FFDD66; }
+
+.resultMessage.complete {
+  color: #527D2D; }
+
+.resultStatus {
+  text-transform: capitalize; }
+
+.resultStatus.rejected {
+  color: #AA1816; }
+
+.resultStatus.accepted {
+  color: #FFDD66; }
+
+.resultStatus.complete {
+  color: #527D2D; }
+
+.card {
+  background-color: #fff;
+  border: 1px solid #d4d4d4;
+  height: 100px;
+  margin-bottom: 20px;
+  position: relative; }
+
+.cardHeader {
+  background-color: #027FF4;
+  font-size: 14pt;
+  color: white;
+  padding: 5px;
+  width: 100%; }
+
+.cardClose {
+  color: white;
+  font-weight: bold;
+  margin-right: 5px; }
+
+.cardContainer {
+  width: 85%; }
+
+.cardBody {
+  padding-left: 5px; }
+
+.cardBodyLeft {
+  margin-top: -5px; }
+
+.cardBodyRight {
+  margin-left: 20px;
+  margin-top: 2px; }
+
+.cardBodyContent {
+  width: 100px; }
+
+.cardImage {
+  height: 50px;
+  width: 50px;
+  margin-top: 10px; }
+
+/* Added to fix Bootstrap 3 issue with Angular UI Bootstrap modal dialog*/
+.modal {
+  display: block;
+  overflow: hidden;
+  overflow-y: hidden; }
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+  background-color: #027FF4;
+  border-color: #027FF4; }
+
+.cardContainer .col-md-3 {
+  padding-left: 0px; }
+
+.gridContainer div {
+  padding-left: 0px; }
+
+.navbar-brand {
+  float: none; }
+
+a.navbar-brand {
+  color: #fff; }
+
+.navbar-inner {
+  padding-left: 0px;
+  -webkit-border-radius: 0px;
+  border-radius: 0px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  background-color: #027FF4;
+  background-image: none; }
+
+.navbar-inner.toolbar {
+  background-color: #fafafa; }
+
+.navbar-inner.footer {
+  background-color: #fafafa;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  height: 50px; }
+
+.navbar .nav > .active > a, .navbar .nav > .active > a:hover, .navbar .nav > .active > a:focus {
+  background-color: #efefef;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  color: #808080; }
+
+.navbar .nav li.toolbaritem a:hover, .navbar .nav li a:hover {
+  color: #E03930; }
+
+.navbar .nav > li {
+  cursor: pointer; }
+
+.navbar .nav > li > a {
+  color: white;
+  font-weight: bold;
+  -webkit-text-shadow: none;
+  text-shadow: none;
+  height: 30px;
+  padding-top: 6px;
+  padding-bottom: 0px; }
+
+.navbar .nav > li.toolbaritem > a {
+  color: black;
+  font-weight: bold;
+  -webkit-text-shadow: none;
+  text-shadow: none; }
+
+.navbar-fixed-top .navbar-inner, .navbar-static-top .navbar-inner {
+  -webkit-box-shadow: 0 1px 0px rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 1px 0px rgba(0, 0, 0, 0);
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0); }
+
+.nav.navBarPadding {
+  margin-left: 25px;
+  margin-top: 10px; }
+
+.navbarText {
+  font-weight: bold; }
+
+.navbar .brand {
+  margin-top: 2px;
+  color: #fff;
+  -webkit-text-shadow: none;
+  text-shadow: none; }
+
+.navbar-toggle {
+  border: 1px solid white; }
+
+.navbar-toggle .icon-bar {
+  background-color: white; }
+
+.close {
+  font-size: 15pt;
+  opacity: 1; }
+
+.modal-backdrop, .modal-backdrop.fade.in {
+  opacity: 0.5;
+  filter: alpha(opacity=50); }
+
+.btn.active {
+  background-color: #f7f7f7; }
+
+/* ng-cloak */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng.ng-cloak {
+  display: none; }
+
+.novalidate {
+  border-left: none !important; }
+
+input.ng-invalid, input.ng-invalid, textarea.ng-invalid {
+  border-left: 5px solid #E03930; }
+
+input.ng-valid, select.ng-valid, textarea.ng-valid {
+  border-left: 5px solid #57A83F; }
+
+.errorMessage {
+  /*position:absolute;*/
+  padding: 5px;
+  /*background-color: #E03930;*/
+  color: red;
+  top: 0px;
+  left: 270px;
+  font-size: 10px; }
+
+.editIcon {
+  margin-top: 2px; }
+
+.pagination li {
+  cursor: pointer; }
+
+/* wcOverlay directive CSS styles */
+.overlayContainer {
+  display: none; }
+
+.overlayBackground {
+  top: 0px;
+  left: 0px;
+  padding-left: 100px;
+  position: absolute;
+  z-index: 1000;
+  height: 100%;
+  width: 100%;
+  background-color: #808080;
+  opacity: 0.3; }
+
+.overlayContent {
+  position: absolute;
+  border: 1px solid #000;
+  background-color: #fff;
+  font-weight: bold;
+  height: 100px;
+  width: 300px;
+  z-index: 1000;
+  text-align: center; }
+
+@media screen and (max-width: 640px) {
+  navbar-toggle {
+    display: none; }
+  #ng-view {
+    padding-top: 90px; }
+  .navbar-brand {
+    font-size: 12pt; }
+  .nav.navBarPadding {
+    margin-left: -10px; }
+  .nav > li > a {
+    padding-right: 5px;
+    padding-left: 5px; } }
+
+/*# sourceMappingURL=styles.css.map */

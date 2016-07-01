@@ -1,0 +1,25 @@
+
+      <md-toolbar class="md-tall md-hue-2">
+        <span flex></span>
+        <div layout="column" class="md-toolbar-tools-bottom inset">
+          <user-avatar></user-avatar>
+          <span></span>
+          <div>Firstname Lastname</div>
+          <div>email@domainname.com</div>
+        </div>
+      </md-toolbar>
+      <md-list>
+      <md-item ng-repeat="item in crudModel">
+        <a href="#/element/{{item.name}}">
+          <md-item-content md-ink-ripple layout="row" layout-align="start center">
+            <div class="inset">
+              <ng-md-icon icon="{{item.icon||'label_outline'}}"></ng-md-icon>
+            </div>
+            <div class="inset">{{item.name}}
+            </div>
+          </md-item-content>
+        </a>
+      </md-item>
+      
+    </md-list>
+    

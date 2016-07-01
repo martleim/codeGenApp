@@ -1,0 +1,151 @@
+<{!
+
+    scope.filterAttributes=function(attributes,condition){
+        var arr=[];
+        angular.forEach(attributes,function(attribute,index){
+            if(condition(attribute))
+                arr.push(attribute);
+                
+        });
+        return arr;
+    };
+    
+    scope.concatAttributes=function(attributes,condition,prefix,postfix){
+        var ret="";
+        prefix=(prefix)?prefix:"";
+        postfix=(postfix)?postfix:"";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            ret+=prefix+attribute.name+postfix+((index<attributes.length-1)?",":"");
+                
+        });
+        return ret;
+    };
+    
+    scope.replaceWithAttribute=function(attributes,condition,str,char,property){
+        var ret="";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            var val=attribute[property];
+            ret+=str.split(char).join(val);
+        });
+        return ret;
+    };
+    
+}>
+/*
+ * ------------------------ <{scope.plural(scope.entity.name)}> ------------------------
+ */
+
+$app->get('/<{scope.plural(scope.entity.name)}>'/*, 'authenticate'*/, function() {
+            global $user_id;
+            $response = array();
+            $db = new DbHandler();
+
+            $result = $db->getAll<{scope.pluralCapital(scope.entity.name)}>();
+
+            $response["error"] = false;
+            $response["<{scope.plural(scope.entity.name)}>"] = array();
+
+            while ($<{scope.entity.name}> = $result->fetch_assoc()) {
+                $tmp = array();
+                
+                <{
+            scope.replaceWithAttribute(scope.entity.attributes,function(a){return true;},"$tmp[\"*\"] = $"+scope.entity.name+"[\"*\"];\n","*","name")
+            }>
+                
+                array_push($response["<{scope.plural(scope.entity.name)}>"], $tmp);
+            }
+
+            echoRespnse(200, $response);
+        });
+
+$app->get('/<{scope.plural(scope.entity.name)}>/:id'/*, 'authenticate'*/, function($id) {
+            global $user_id;
+            $response = array();
+            $db = new DbHandler();
+
+            $result = $db->get<{scope.capital(scope.entity.name)}>($id);
+
+            if ($result != NULL) {
+                $response["error"] = false;
+                
+                 <{
+            scope.replaceWithAttribute(scope.entity.attributes,function(a){return true;},"$response[\"*\"] = $result[\"*\"];\n","*","name")
+            }>
+                echoRespnse(200, $response);
+            } else {
+                $response["error"] = true;
+                $response["message"] = "The requested resource doesn't exists";
+                echoRespnse(404, $response);
+            }
+        });
+
+$app->post('/<{scope.plural(scope.entity.name)}>', 'authenticate', function() use ($app) {
+            // check for required params
+            verifyRequiredParams(array(<{ scope.concatAttributes(scope.entity.attributes,function(a){return (a.key!="PRIMARY" && a.required);},"\"") }>));
+
+            $response = array();
+            
+             <{
+            scope.replaceWithAttribute(scope.entity.attributes,function(a){return a.key!="PRIMARY";},"$* = $app->request->post(\"*\");\n","*","name")
+            }>
+            
+            global $user_id;
+            $db = new DbHandler();
+
+            $id = $db->create<{scope.capital(scope.entity.name)}>(<{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key!="PRIMARY";},"$") }>);
+
+            if ($id != NULL) {
+                $response["error"] = false;
+                $response["message"] = "<{scope.capital(scope.entity.name)}> created successfully";
+                $response["id"] = $id;
+                echoRespnse(201, $response);
+            } else {
+                $response["error"] = true;
+                $response["message"] = "Failed to create <{scope.capital(scope.entity.name)}>. Please try again";
+                echoRespnse(200, $response);
+            }            
+        });
+
+$app->put('/<{scope.plural(scope.entity.name)}>/:id', 'authenticate', function($id) use($app) {
+            // check for required params
+            verifyRequiredParams(array(<{ scope.concatAttributes(scope.entity.attributes,function(a){return (a.key!="PRIMARY" && a.required);},"\"") }>));
+
+            global $user_id;            
+            
+            <{
+            scope.replaceWithAttribute(scope.entity.attributes,function(a){return a.key!="PRIMARY";},"$* = $app->request->post(\"*\");\n","*","name")
+            }>
+
+            $db = new DbHandler();
+            $response = array();
+
+            $result = $db->update<{scope.capital(scope.entity.name)}>(<{ scope.concatAttributes(scope.entity.attributes,function(a){return true;},"$") }>);
+            if ($result) {
+                $response["error"] = false;
+                $response["message"] = "<{scope.capital(scope.entity.name)}> updated successfully";
+            } else {
+                $response["error"] = true;
+                $response["message"] = "<{scope.capital(scope.entity.name)}> failed to update. Please try again!";
+            }
+            echoRespnse(200, $response);
+        });
+
+$app->delete('/<{scope.plural(scope.entity.name)}>/:id', 'authenticate', function($id) use($app) {
+            global $user_id;
+
+            $db = new DbHandler();
+            $response = array();
+            $result = $db->delete<{scope.capital(scope.entity.name)}>($id);
+            if ($result) {
+                $response["error"] = false;
+                $response["message"] = "<{scope.capital(scope.entity.name)}> deleted succesfully";
+            } else {
+                $response["error"] = true;
+                $response["message"] = "<{scope.capital(scope.entity.name)}> failed to delete. Please try again!";
+            }
+            echoRespnse(200, $response);
+        });
+
+

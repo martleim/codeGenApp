@@ -1,0 +1,33 @@
+{
+    "name": "RestoApp",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+		"start": "node server.js",
+        "start_old": "node ./bin/www"
+    },
+    "dependencies": {
+        "express": "~4.2.0",
+        "express-session": "~1.0.0",
+        
+        "passport" : "~0.1.17",
+        "passport-local" : "~0.1.6",
+        "passport-facebook" : "~1.0.2",
+        "passport-twitter" : "~1.0.2",
+        "passport-google-oauth" : "~0.1.5",
+        "connect-flash" : "~0.1.1",
+        "bcrypt-nodejs" : "latest",
+        
+        "method-override": "~1.0.0",
+        "body-parser": "~1.0.0",
+        "mongoose": "~4.1.9",
+        "cookie-parser": "~1.0.1",
+        "debug": "~0.7.4",
+        "jade": "*",
+        "morgan": "~1.0.0",
+        "cors": "2.7.1",
+		"socket.io": "latest"
+    },
+    "author": "martleim",
+	"main": "server.js"
+}

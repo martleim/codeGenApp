@@ -1,0 +1,13 @@
+#crudPicker
+    h1=title
+    #elementList
+        table
+            thead
+                -for(var val in model.paths)
+                    - if ( val.indexOf("_")!=0 )
+                        th=val
+                th=actions
+            tbody
+
+    br
+

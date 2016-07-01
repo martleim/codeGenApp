@@ -1,0 +1,43 @@
+<{!
+    var Types={dataTypes:[]};
+    scope.getEntityAttributes=function(attributes){
+        var ret=[];
+        var types=Types.dataTypes;
+        angular.forEach(attributes,function(attribute,index){
+            ret.push(attribute.name+": { type: "+this.getType(attribute)+(attribute.required?", required:true":"")+(attribute.unique?", unique:true":"")+" } ");
+        },this);
+        return ret.join(",\n\t");
+    };
+    
+    scope.getType=function(attribute){
+        var ret="";
+        if(attribute.type=="Array"){
+			if(attribute.references){
+				ret+="[mongoose.Schema.Types.ObjectId], ref: '"+attribute.references+"' ";
+			}
+		}else if(attribute.type=="Object"){
+			if(attribute.references){
+				ret+="mongoose.Schema.Types.ObjectId, ref: '"+attribute.references+"' ";
+			}
+		}else if(attribute.type=="Date"){
+			ret+="Date, default: Date.now ";
+		}else if(attribute.type=="Number"){
+			ret+="Number ";
+		}else if(attribute.type=="Boolean"){
+			ret+="Boolean ";
+		}else {
+			ret+="String ";
+		}
+        
+        return ret;
+    };
+    
+}>
+var mongoose     = require('mongoose');
+var Schema       = mongoose.Schema;
+
+var <{scope.capital(scope.entity.name)}>Schema   = new Schema({
+    <{scope.getEntityAttributes(scope.entity.attributes)}>
+});
+
+module.exports = mongoose.model('<{scope.capital(scope.entity.name)}>', <{scope.capital(scope.entity.name)}>Schema);

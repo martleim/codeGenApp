@@ -1,0 +1,75 @@
+<{!
+    scope.getRoutesForEntities=function(url){
+        var ret=[];
+		console.log("MANIZE "+url+" "+JSON.stringify(scope.entities));
+        angular.forEach(scope.entities,function(entity){
+		
+            scope.entity=entity;
+            ret.push("var "+entity.name+" = require(basePath+'"+entity.name+"');");
+			ret.push("app.use('/"+entity.name+"',"+entity.name+");");
+			scope.parseAndGenerateSubTemplate(url,"\\server\\routes\\"+entity.name+".js");
+        },scope);
+        return ret.join("\n\t");
+    };
+    
+}>
+module.exports = function(app, passport) {
+
+    var basePath = "./";
+    
+    var auth = require(basePath+'auth');//(app,passport);
+    var index = require(basePath+'index');
+    var user = require(basePath+'user');
+    var userType = require(basePath+'userType');
+    var profile = require(basePath+'profile');
+	var credential = require(basePath+'credential');
+	var api = require(basePath+'api');
+    var crud = require(basePath+'crud');
+	
+	
+    //---------------------//
+    app.use("/auth",auth);
+    app.use("/",index);
+    app.use("/user",user);
+    app.use("/usertype",userType);
+    app.use("/profile",profile);
+	app.use("/credential",credential);
+	app.use("/api",api);
+    app.use("/crud",crud);
+	
+	<{
+		scope.getRoutesForEntities("/server/routes/route_js");
+	}>
+	
+
+    /// catch 404 and forwarding to error handler
+    app.use(function(req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+    });
+
+    /// error handlers
+
+    // development error handler
+    // will print stacktrace
+    if (app.get('env') === 'development') {
+        app.use(function(err, req, res, next) {
+            res.render('error', {
+                message: err.message,
+                error: err
+            });
+        });
+    }
+
+    // production error handler
+    // no stacktraces leaked to user
+    app.use(function(err, req, res, next) {
+        res.render('error', {
+            message: err.message+" "+err.stack,
+            error: {}
+        });
+    });
+	
+    
+}

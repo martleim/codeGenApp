@@ -1,0 +1,168 @@
+<{!
+    scope.filterAttributes=function(attributes,condition){
+        var arr=[];
+        angular.forEach(attributes,function(attribute,index){
+            if(condition(attribute))
+                arr.push(attribute);
+                
+        });
+        return arr;
+    };
+    
+    scope.concatAttributes=function(attributes,condition,prefix,postfix){
+        var ret="";
+        prefix=(prefix)?prefix:"";
+        postfix=(postfix)?postfix:"";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            ret+=prefix+attribute.name+postfix+((index<attributes.length-1)?",":"");
+                
+        });
+        return ret;
+    };
+    
+    scope.getAttributesTypes=function(attributes,condition){
+        var ret="";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            ret+=(attribute.type.charAt(0)).toLowerCase();
+        });
+        return ret;
+    };
+    
+    scope.replaceWithAttribute=function(attributes,condition,str,char,property){
+        var ret="";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            var val=attribute[property];
+            ret+=str.split(char).join(val);
+        });
+        return ret;
+    };
+    
+}>
+(function () {
+
+    var <{scope.pluralCapital(scope.entity.name)}>Controller = function ($scope, $location, $filter, dataService, modalService) {
+
+        $scope.<{scope.pluralCapital(scope.entity.name)}> = [];
+        $scope.unFiltered<{scope.pluralCapital(scope.entity.name)}> = [];
+        
+        $scope.<{scope.plural(scope.entity.name)}>GridConfig={
+            data:"<{scope.plural(scope.entity.name)}>",
+            columns:[
+                    <{
+                        scope.replaceWithAttribute(scope.entity.attributes,function(a){return a.visible;},'{name:"*",label:"*", width:"30%"},\n',"*","name")
+                    }>
+                    
+                    /*{name:"name",label:"Nombre", width:"30%", sortable:true, sortFunction:function(a,b) { return a.name<b.name; }},
+                    {name:"address",label:"Direccion", width:"30%"},
+                    {name:"telephone",label:"Telefono", width:"30%",cellRenderer:function(row){ 
+                        return row.telephone;
+                    } },*/
+                    
+                    {name:"name",label:"", width:"10%",cellRenderer:"<button type='button' class='btn btn-danger glyphicon glyphicon-remove-sign' style='margin-right:8px;height:30px' ng-click='delete(row)'></button><button type='button' class='btn btn-primary glyphicon glyphicon-pencil' style='margin-right:8px;height:30px' ng-click='edit<{scope.capital(scope.entity.name)}>(row)'></button>"}]
+        };
+		
+
+        //paging
+        $scope.totalRecords = 0;
+        $scope.pageSize = 10;
+        $scope.currentPage = 1;
+        $scope.navigatablePages=[];
+        $scope.totalShownPages=6;
+        $scope.totalPages=0;
+
+        $scope.pageChanged = function (page) {
+            if(page>=1 && page<=$scope.totalPages){
+                $scope.currentPage = page;
+                $scope.update<{scope.pluralCapital(scope.entity.name)}>();
+            }
+        };
+        
+        $scope.nextPage = function () {
+            $scope.pageChanged($scope.currentPage+1);
+        };
+        
+        $scope.lastPage = function () {
+            $scope.pageChanged($scope.currentPage-1);
+        };
+
+        $scope.delete = function (<{scope.entity.name}>) {
+            
+            var name = <{scope.entity.name}>.name;
+
+            var modalOptions = {
+                closeButtonText: 'Cancelar',
+                actionButtonText: 'Eliminar <{scope.capital(scope.entity.name)}>',
+                headerText: 'Eliminar ' + name + '?',
+                bodyText: 'Esta seguro que desea eliminar este <{scope.capital(scope.entity.name)}>?'
+            };
+
+            modalService.showModal({}, modalOptions).then(function (result) {
+                if (result === 'ok') {
+                    dataService.delete<{scope.capital(scope.entity.name)}>(name);
+                    $scope.update<{scope.pluralCapital(scope.entity.name)}>();
+                }
+            });
+        };
+        
+        $scope.edit<{scope.capital(scope.entity.name)}>=function(<{scope.entity.name}>){
+            $location.path("/<{scope.entity.name}>edit/"+<{scope.entity.name}>.name);
+        };
+
+        $scope.navigate = function (url) {
+            $location.path(url);
+        };
+
+        $scope.searchTextChanged = function () {
+            this.filter<{scope.pluralCapital(scope.entity.name)}>($scope.nameSearchText, $scope.addressSearchText);
+        };
+
+        $scope.update<{scope.pluralCapital(scope.entity.name)}> = function(){
+            var res=dataService.get<{scope.pluralCapital(scope.entity.name)}>(this.currentPage,this.pageSize);
+            $scope.<{scope.plural(scope.entity.name)}>=res.results;
+            $scope.unFiltered<{scope.pluralCapital(scope.entity.name)}>=$scope.<{scope.plural(scope.entity.name)}>;
+            
+            $scope.totalRecords=res.totalRecords;
+            $scope.setNavigatablePages();
+        }
+        
+        $scope.setNavigatablePages = function(){
+            $scope.totalPages=Math.ceil(this.totalRecords/this.pageSize)-1;
+            var start=this.currentPage-($scope.totalShownPages/2);
+            start=(start<1)?1:start;
+            var end=start+($scope.totalShownPages-1);
+            if(end>$scope.totalPages){
+                start-=(end-$scope.totalPages);
+            }
+            var pages=[];
+            for(var i=0;i<$scope.totalShownPages;i++){
+                pages.push(start+i);
+            }
+            $scope.navigatablePages=pages;
+        }
+        
+        
+
+        $scope.filter<{scope.pluralCapital(scope.entity.name)}>=function(name,address) {
+            var filtered<{scope.pluralCapital(scope.entity.name)}> = $filter("nameAddressFilter")($scope.unFiltered<{scope.pluralCapital(scope.entity.name)}>, name, address);
+            $scope.<{scope.plural(scope.entity.name)}>=filtered<{scope.pluralCapital(scope.entity.name)}>;
+            
+        }
+
+        function init() {
+            dataService.initialize().then(function(p) {
+                $scope.update<{scope.pluralCapital(scope.entity.name)}>();
+            });
+        }
+            
+        init();
+    };
+
+    <{scope.pluralCapital(scope.entity.name)}>Controller.$inject = ['$scope', '$location', '$filter', 'dataService', 'modalService'];
+
+    angular.module('<{scope.capital("test")}>App').controller('<{scope.pluralCapital(scope.entity.name)}>Controller', <{scope.pluralCapital(scope.entity.name)}>Controller);
+
+}());
+

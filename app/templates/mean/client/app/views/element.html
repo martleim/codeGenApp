@@ -1,0 +1,77 @@
+		<button class="md-fab md-fab-bottom-right md-button md-default-theme" aria-label="Add" ng-click="addElement($event)" tabindex="0">
+        <ng-md-icon icon="add" class="ng-scope"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path></svg></ng-md-icon>
+      </button>
+	  <button class="md-fab md-fab-bottom-right md-button md-default-theme" aria-label="Add" ng-click="deleteElement($event)" tabindex="0">
+        <ng-md-icon icon="add" class="ng-scope">
+		
+		</ng-md-icon>
+      </button>
+      <md-toolbar ng-show="!showSearch" class="md-default-theme" aria-hidden="false">
+        <div class="md-toolbar-tools">
+          <button class="md-button md-default-theme" ng-click="toggleSidenav('left')" hide-gt-md="" aria-label="Menu" tabindex="0">
+            <ng-md-icon icon="menu" class="ng-scope"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 18h18v-2H3v2z"></path><path d="M3 13h18v-2H3v2z"></path><path d="M3 6v2h18V6H3z"></path></svg></ng-md-icon>
+          </button>
+          <h3>
+            {{type}}
+          </h3>
+          <span flex=""></span>
+          <button class="md-button md-default-theme" aria-label="Search" ng-click="showSearch = !showSearch" tabindex="0">
+            <ng-md-icon icon="search" class="ng-scope"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg></ng-md-icon>
+          <div class="md-ripple-container"></div></button>
+          <button class="md-button md-default-theme" aria-label="Open Settings" ng-click="showListBottomSheet($event)" tabindex="0">
+            <ng-md-icon icon="more_vert" class="ng-scope"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path><path d="M12 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></ng-md-icon>
+          </button>
+        </div>
+
+        </div></div><!-- ngIf: pagination.active && pagination.hasNext --></section><section class="md-tabs-content"></section></md-tabs>
+      </md-toolbar>
+      <md-toolbar class="md-hue-1 md-default-theme ng-hide" ng-show="showSearch" aria-hidden="true">
+        <div class="md-toolbar-tools">
+          <button class="md-button md-default-theme" ng-click="showSearch = !showSearch" aria-label="Back" tabindex="0">
+            <ng-md-icon icon="arrow_back" class="ng-scope"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path></svg></ng-md-icon>
+          </button>
+          <h3 flex="10">
+            Back
+          </h3>
+          <md-input-container md-theme="input" flex="" class="md-input-theme">
+            <label for="input_001">&nbsp;</label>
+            <input ng-model="search.who" class="ng-pristine ng-untouched ng-valid md-input" tabindex="0" id="input_001" aria-invalid="false">
+          <div class="md-placeholder">enter search</div></md-input-container>
+          <button class="md-button md-default-theme" aria-label="Search" ng-click="showSearch = !showSearch" tabindex="0">
+            <ng-md-icon icon="search" class="ng-scope"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path></svg></ng-md-icon>
+          <div class="md-ripple-container"></div></button>
+          <button class="md-button md-default-theme" aria-label="Open Settings" ng-click="showListBottomSheet($event)" tabindex="0">
+            <ng-md-icon icon="more_vert" class="ng-scope"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"></path><path d="M12 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path><path d="M12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path></svg></ng-md-icon>
+          </button>
+        </div>
+       
+      </md-toolbar>
+      <md-content flex="" md-scroll-y="" class="md-default-theme">
+        <ui-view layout="column" layout-fill="" layout-padding="">
+          <div class="inset" hide-sm=""></div>
+            
+              <!-- ngSwitchWhen: 0 -->
+			  <div layout="row" layout-align="center center" class="ng-scope">
+                  <md-card flex-gt-sm="90" flex-gt-md="80" class="md-default-theme">
+                    <md-card-content>
+                      <ng-include  src="'app/views/elementGrid.html'"></ng-include>
+                    </md-card-content>
+                  </md-card>
+              </div>
+              
+          
+        </ui-view>
+      </md-content>
+
+<script type="text/ng-template" id="elementEdit.html">
+	<md-dialog aria-label="Mango (Fruit)">
+		<md-content class="md-padding"  ng-include="'app/views/elementEdit.html'">
+		</md-content>
+		<div class="md-actions" layout="row">
+		<span flex></span>
+		<md-button ng-click="answer(\'not useful\')"> Cancel </md-button>
+		<md-button ng-click="answer(\'useful\')" class="md-primary"> Save </md-button>
+	</div>
+	</md-dialog>
+
+</script>

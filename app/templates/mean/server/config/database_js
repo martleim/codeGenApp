@@ -1,0 +1,16 @@
+// config/database.js
+
+var connection_string = "admin:xMY_Pc4fkx8x@mongodb://127.0.0.1:27017/nodejs";
+// if OPENSHIFT env variables are present, use the available connection info:
+if(process && process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
+  connection_string = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
+  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
+  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
+  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
+  process.env.OPENSHIFT_APP_NAME;
+}
+connection_string="mongodb://127.0.0.1:27017/<{scope.appName}>";
+module.exports = {
+    url:connection_string
+    //url:"admin:xMY_Pc4fkx8x@http://nodejs-restoapp.rhcloud.com/nodejs"
+};

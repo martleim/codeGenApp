@@ -1,0 +1,270 @@
+<{!
+    scope.getMainEntity=function(){
+		var ret={name:"empty"};
+        angular.forEach(scope.entities,function(entity){
+			if(entity.main)
+				ret=entity;
+        },scope);
+        return ret;
+    };
+    
+}>
+var express = require("express");
+var mongoose = require("mongoose");
+var passport = require("passport");
+var router = express.Router();
+var Main     = require("../models/<{scope.getMainEntity().name;}>");
+var mainPath = "/:<{scope.getMainEntity().name;}>Id/:eltype";
+
+// route middleware to ensure user is logged in
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.status(403);
+    res.send("");
+    //res.redirect('/');
+}
+
+function checkAccess(req, res, module) {
+  console.log("CHECK ACCESS : ");
+  return;
+    if (req.user && req.user.group === group)
+      next();
+    else
+      res.send(401, 'Unauthorized');
+};
+
+function getAttributeFromType(type){
+	type=(type.charAt(0).toLowerCase()+type.substring(1,type.length));
+	if(type.charAt(type.length-1)=="y"){
+		type=type.substring(0,type.length-1)+"ies";
+	}else{
+		type+="s";
+	}
+	return type;
+}
+
+
+router.get("/models/:filter",function(req, res) {
+
+	checkAccess(req, res, "models");
+	
+    var mongoose     = require('mongoose');
+	var filter=req.params.filter;
+	var models={};
+	
+	var modelNames = Object.keys(mongoose.models);
+	
+	for(var i=0;i<modelNames.length;i++){
+		var schema = mongoose.model(modelNames[i]).schema;
+		var paths=schema.paths;
+		var model=[]
+		for(var attributeName in paths){
+			var attribute=paths[attributeName];
+			var type=attribute.instance;
+			var ref='';
+			if(attribute.constructor.toString().indexOf("Date")>0){
+				type="Date";
+			}else if(attribute.options && attribute.options.ref){
+				ref=" ref='"+attribute.options.ref+"'"; }
+			else if(attribute.options && attribute.options.type instanceof Array && attribute.options.type[0] && attribute.options.type[0].ref){
+				ref=" ref='["+attribute.options.type[0].ref+"]'"; 
+			}
+			var req=false;
+			for(var val in paths){
+				if(paths[val].validators && paths[val].validators){ 
+					for(var v=0;v<paths[val].validators.length;v++){
+						if(paths[val].validators[v].type=="required"){
+							req=true; 
+							break;
+						}
+					} 
+				}
+			}
+			//var input="input name='"+attributeName+"' id='input_"+attributeName+"' type='"+type+"' placeholder='"+attributeName+"'"+ref;
+			model.push({
+				name:attributeName,
+				type:type,
+				ref:ref,
+				required:req
+			});
+		}
+		models[modelNames[i]]=model;
+	}
+	res.json(models);
+});
+
+router.route(mainPath).get(isLoggedIn,function(req, res) {
+	
+	var mainId=req.params.mainId;
+    var elType=req.params.eltype;
+	checkAccess(req, res, elType.toLowerCase());
+	
+	var attribute=getAttributeFromType(elType);
+	
+    Main.findOne({_id:mainId}).populate(attribute).exec(function(err, main) {
+        if (err) {
+        return res.send(err);
+        }
+        res.json(main[attribute]);
+    });
+});
+
+router.route(mainPath).post(isLoggedIn,function(req, res) {
+    
+	var mainId=req.params.mainId;
+    var elType=req.params.eltype;
+	checkAccess(req, res, elType.toLowerCase());
+	
+	var ElementSchema = require("../models/"+elType.toLowerCase());
+    var element = new ElementSchema(req.body);
+	
+	element.save(function(err) {
+        if (err) {
+            return res.send(err);
+        }
+		
+		var pushEl={};
+		pushEl[getAttributeFromType(elType)]=element;
+		
+		Main.findByIdAndUpdate(
+			mainId,
+			{$push: pushEl},
+			{safe: true, upsert: true},
+			function(err, model) {
+				if (err) {
+					return res.send({ error: err });
+				}
+				res.send({ message: 'OK' });
+			}
+		);
+    });
+
+	
+});
+
+router.route(mainPath+"/:id").get(isLoggedIn,function(req, res) {
+    var mainId=req.params.mainId;
+    var elType=req.params.eltype;
+	checkAccess(req, res, elType.toLowerCase());
+	
+	var attribute=getAttributeFromType(elType);
+	var toGet = req.params.id;
+	
+    Main.findOne({_id:mainId})
+	.populate({
+		path:attribute,
+		match: { _id: toGet}}).exec(function(err, main) {
+        if (err) {
+			return res.send({ error: err });
+        }
+		var els=main[attribute];
+        res.json( ((els.length>0)?els[0]:null) );
+    });
+});
+
+router.route(mainPath+"/:id").delete(isLoggedIn,function(req, res) {
+	
+	var mainId=req.params.mainId;
+    var elType=req.params.eltype;
+	checkAccess(req, res, elType.toLowerCase());
+
+    var toDelete = req.params.id;
+	var pullEl={$pull: {}};
+	pullEl.$pull[getAttributeFromType(elType)]=toDelete;
+	var ElementSchema = require("../models/"+elType.toLowerCase());
+	
+	var removeElement=function(err, model) {
+		if (err) {
+			return res.send({ error: err });
+		}
+		ElementSchema.remove({ _id: toDelete }, function(err, result) {
+			return res.send((res) ? { error: err }: { message: 'OK' });
+		});
+	}
+	
+	Main.findOneAndUpdate(
+		{_id:mainId},
+		pullEl,
+		{ multi: true },
+		removeElement
+	);
+	
+});
+
+router.route(mainPath+"/:id").put(isLoggedIn,function(req, res) {
+
+	var mainId=req.params.mainId;
+    var elType=req.params.eltype;
+	checkAccess(req, res, elType.toLowerCase());
+
+    var toUpdate = req.body;
+    
+	var ElementSchema = require("../models/"+elType.toLowerCase());
+    var element = new ElementSchema(req.body);
+	
+    ElementSchema.update({ _id: req.params.id }, toUpdate, function(err, result) {
+        return res.send((res) ? { error: err }: { message: 'OK' });
+    });
+});
+
+
+
+/*signin-login*/
+function authenticatedCallback(_req, _res, _next) {
+    var req=_req;
+    var res=_res;
+    var next=_next;
+    
+    return function(err, user, info) {
+        if (err || info) { 
+            return res.send({ Result:"ERROR", message: (err || info) });
+        }else if(user){
+			req.login(user, function(err) {
+				if (err){
+					return res.send({ Result:"ERROR", message: (err || info) });
+				}
+				return res.send({ Result:"OK" });
+            });
+		}
+       //var mains=Main.find({users:{ $elemMatch:{ user:{email:user.email} } } });
+    }
+}
+
+
+function signedUpCallback(_req, _res, _next) {
+    var req=_req;
+    var res=_res;
+    var next=_next;
+    
+    return function(err, user, info) {
+        if (err || info) { 
+            return res.send({ Result:"ERROR", message: (err || info) });
+        }
+        return res.send({ Result:"OK" });
+    }
+}
+
+router.post("/login",function(req, res, next) {
+    passport.authenticate('local-login', 
+        authenticatedCallback(req, res, next)
+        )(req, res, next);
+});
+
+router.post("/logout",function(req, res, next) {
+    req.logOut();
+	req.session.destroy();
+	return res.send({ Result:"OK" });
+});
+
+// process the signup form
+router.post("/signup", function(req, res, next) {
+    passport.authenticate('local-signup', 
+        signedUpCallback(req, res, next)
+        )(req, res, next);
+});
+
+
+
+module.exports = router;

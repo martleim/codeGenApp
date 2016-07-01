@@ -1,0 +1,26 @@
+{
+    "path": {
+        "sass/bootstrap.scss": {
+            "sass.enabled": true,
+            "sass.options": {
+                "output": "bootstrap.css",
+                "includePaths": [],
+                "imagePath": null,
+                "sourceComments": "map",
+                "sourceMap": "bootstrap.css.map",
+                "outputStyle": "nested"
+            }
+        },
+        "sass/bootstrap/*.scss": {
+            "sass.enabled": false
+        },
+        "sass/animations/*.scss": {
+            "sass.enabled": false
+        },
+        "sass/styles/*.scss": {
+            "sass.enabled": false,
+            "linting.collapsed": true,
+            "useTabChar": true
+        }
+    }
+}

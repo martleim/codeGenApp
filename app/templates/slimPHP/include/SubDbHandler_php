@@ -1,0 +1,123 @@
+<{!
+
+    scope.filterAttributes=function(attributes,condition){
+        var arr=[];
+        angular.forEach(attributes,function(attribute,index){
+            if(condition(attribute))
+                arr.push(attribute);
+                
+        });
+        return arr;
+    };
+    
+    scope.concatAttributes=function(attributes,condition,prefix,postfix){
+        var ret="";
+        prefix=(prefix)?prefix:"";
+        postfix=(postfix)?postfix:"";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            ret+=prefix+attribute.name+postfix+((index<attributes.length-1)?",":"");
+                
+        });
+        return ret;
+    };
+    
+    scope.getQuestionMarks=function(attributes,condition){
+        var ret="";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            ret+="? "+((index<attributes.length-1)?",":"");
+                
+        });
+        return ret;
+    };
+    
+    scope.getAttributesTypes=function(attributes,condition){
+        var ret="";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            ret+=(attribute.type.charAt(0)).toLowerCase();
+        });
+        return ret;
+    };
+    
+    scope.replaceWithAttribute=function(attributes,condition,str,char,property){
+        var ret="";
+        attributes=this.filterAttributes(attributes,condition);
+        angular.forEach(attributes,function(attribute,index){
+            var val=attribute[property];
+            ret+=str.split(char).join(val);
+        });
+        return ret;
+    };
+    
+}>
+/* ------------- `<{scope.plural(scope.entity.name)}>` table method ------------------ */
+    
+    public function getAll<{scope.pluralCapital(scope.entity.name)}>() {
+        $stmt = $this->conn->prepare("SELECT * FROM <{scope.plural(scope.entity.name)}>");
+        $stmt->execute();
+        $<{scope.plural(scope.entity.name)}> = $stmt->get_result();
+        $stmt->close();
+        return $<{scope.plural(scope.entity.name)}>;
+    }
+
+    public function create<{scope.capital(scope.entity.name)}>(<{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key!="PRIMARY";},"$") }>) {
+        $stmt = $this->conn->prepare("INSERT INTO <{scope.plural(scope.entity.name)}>(<{
+        scope.concatAttributes(scope.entity.attributes,function(a){return a.key!="PRIMARY";})
+    }>) VALUES(<{
+        scope.getQuestionMarks(scope.entity.attributes,function(a){return a.key!="PRIMARY";})
+    }>)");
+        $stmt->bind_param("<{scope.getAttributesTypes(scope.entity.attributes,function(a){return a.key!="PRIMARY";})}>", <{
+         scope.concatAttributes(scope.entity.attributes,function(a){return a.key!="PRIMARY";},"$")
+    }>);
+        $result = $stmt->execute();
+        $stmt->close();
+
+        if ($result) {
+            $new_<{scope.entity.name}>_id = $this->conn->insert_id;
+            return $new_<{scope.entity.name}>_id;
+        } else {
+            return NULL;
+        }
+    }
+
+    public function get<{scope.capital(scope.entity.name)}>(<{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key=="PRIMARY";},"$") }>) {
+        $stmt = $this->conn->prepare("SELECT <{ scope.concatAttributes(scope.entity.attributes,function(a){return true;},"t.","") }> from <{scope.plural(scope.entity.name)}> t WHERE <{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key=="PRIMARY";},"t.","=?") }>");
+        $stmt->bind_param("<{scope.getAttributesTypes(scope.entity.attributes,function(a){return a.key=="PRIMARY";})}>", <{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key=="PRIMARY";},"$","") }>);
+        if ($stmt->execute()) {
+            $res = array();
+            $stmt->bind_result(<{ scope.concatAttributes(scope.entity.attributes,function(a){return true;},"$") }>);
+            $stmt->fetch();
+            
+            <{
+            scope.replaceWithAttribute(scope.entity.attributes,function(a){return true;},"$res[\"*\"] = $*;\n","*","name")
+            }>
+            
+            $stmt->close();
+            return $res;
+        } else {
+            return NULL;
+        }
+    }
+
+    public function update<{scope.capital(scope.entity.name)}>(<{ scope.concatAttributes(scope.entity.attributes,function(a){return true;},"$") }>) {
+        $stmt = $this->conn->prepare("UPDATE <{scope.plural(scope.entity.name)}> t set <{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key!="PRIMARY";},"t."," = ? ") }> WHERE <{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key=="PRIMARY";},"t."," = ? ") }>");
+        $stmt->bind_param("<{scope.getAttributesTypes(scope.entity.attributes,function(a){return a.key!="PRIMARY";})}><{scope.getAttributesTypes(scope.entity.attributes,function(a){return a.key=="PRIMARY";})}>", <{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key!="PRIMARY";},"$") }>,<{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key=="PRIMARY";},"$") }>);
+        $stmt->execute();
+        $num_affected_rows = $stmt->affected_rows;
+        $stmt->close();
+        return $num_affected_rows > 0;
+    }
+
+    public function delete<{scope.capital(scope.entity.name)}>(<{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key=="PRIMARY";},"$") }>) {
+        $stmt = $this->conn->prepare("DELETE FROM <{scope.plural(scope.entity.name)}> WHERE id = ?");
+        $stmt->bind_param("<{scope.getAttributesTypes(scope.entity.attributes,function(a){return a.key=="PRIMARY";})}>", <{ scope.concatAttributes(scope.entity.attributes,function(a){return a.key=="PRIMARY";},"$") }>);
+        $stmt->execute();
+        $num_affected_rows = $stmt->affected_rows;
+        $stmt->close();
+        return $num_affected_rows > 0;
+    }
+}
+    
+    

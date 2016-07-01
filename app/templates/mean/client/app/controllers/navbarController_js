@@ -1,0 +1,70 @@
+(function () {
+
+    
+    var NavbarController = function ($scope, $location, authService, dataService) {
+        var appTitle = "Customer Management";
+        $scope.isCollapsed = false;
+        //$scope.appTitle = appTitle;
+        $scope.isLogged=false;
+		$scope.crudModel=[];
+
+        $scope.highlight = function (path) {
+            return $location.path().substr(0, path.length) == path;
+        };
+
+        $scope.loginOrOut = function () {
+            setLoginLogoutText();
+            var isAuthenticated = authService.user.isAuthenticated;
+            if (isAuthenticated) { //logout 
+                authService.logout().then(function () {
+                    $location.path("/");
+                    return;
+                });                
+            }
+            redirectToLogin();
+        };
+
+        function redirectToLogin() {
+            var path = "/login" + $location.$$path;
+            $location.replace();
+            $location.path(path);
+        }
+
+        $scope.$on("loginStatusChanged", function (loggedIn) {
+            setLoginLogoutText(loggedIn);
+			updataCrudModels();
+        });
+
+        $scope.$on("redirectToLogin", function () {
+            redirectToLogin();
+        });
+
+        function setLoginLogoutText() {
+            $scope.isLogged=authService.user.isAuthenticated;
+            $scope.loginLogoutText = (authService.user.isAuthenticated) ? "Logout" : "Login";
+        }
+		
+		function updataCrudModels(){
+			dataService.getCrudModels().then(function(model){
+				var arr=[]
+				for(var i in model)
+					arr.push({name:i,model:model[i]});
+			
+				$scope.crudModel=arr;
+			});
+		}
+		
+		function init() {
+			setLoginLogoutText();
+			updataCrudModels();
+        }
+		
+        init();
+
+    };
+
+    NavbarController.$inject = ["$scope", "$location", "authService", "dataService"];
+
+    angular.module("<{scope.appName}>").controller("NavbarController", NavbarController);
+
+}());

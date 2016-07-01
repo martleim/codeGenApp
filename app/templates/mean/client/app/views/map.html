@@ -1,0 +1,153 @@
+<div class="view indent">
+    <div class="container">
+        <header>
+                <h2>Map</h2>
+        </header>
+        
+        <leaflet width="100%" height="480px" tiles_no="tiles" defaults="defaults" layers="layers" markers="markers" center="center"></leaflet>
+        <div style="width:100%;height:10%;margin:10px">
+            <button class="btn btn-default" ng-show="markers.selectedPosition" ng-click="addMapElement()" style="float:right">Agregar</button>
+            <button class="btn btn-default" ng-show="selectedElement" ng-click="editMapElement()" style="float:right">Editar</button>
+            <button class="btn btn-default" ng-show="selectedElement" ng-click="removeMapElement()" style="float:right">Eliminar</button>
+        </div>
+        
+        
+    </div>
+</div>
+
+
+
+<script type="text/ng-template" id="mapLocationEdit.html">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>{{modalOptions.headerText}}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{modalOptions.bodyText}}</p>
+            <form name="editForm" novalidate>
+                <div class="row">
+                    <div class="col-md-2">
+                        Nombre:
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="name" class="form-control" data-ng-model="modalOptions.mapLocation.name" maxlength="50" required />
+                        <span class="errorMessage" ng-show="editForm.name.$dirty && editForm.name.$invalid">
+                            El nombre es requerido
+                        </span>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-md-2">
+                        Category:
+                    </div>
+                    <div class="col-md-10">
+                        <!--select type="text" name="category" class="form-control" ng-options="option.category for option in modalOptions.categories track by option.id" 	ng-model="modalOptions.mapLocation.category_id" maxlength="50" required></select-->
+						
+						<select type="text" name="category" id="category" class="form-control" ng-model="modalOptions.mapLocation.category_id" required>
+						  <option ng-repeat="option in modalOptions.categories" value="{{option.id}}" ng-selected="modalOptions.mapLocation.category_id==option.id">{{option.category}}</option>
+						</select>
+						
+                        <span class="errorMessage" ng-show="editForm.name.$dirty && editForm.name.$invalid">
+                            La categoria es requerida
+                        </span>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-md-2">
+                        Direccion:
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="address" class="form-control" data-ng-model="modalOptions.mapLocation.address" maxlength="50" required />
+                        <span class="errorMessage" ng-show="editForm.address.$dirty && editForm.address.$invalid">
+                            La direccion es requerida
+                        </span>
+                    </div>
+                </div>
+                <br />
+                
+              <div class="row">
+                    <div class="col-md-2">
+                        Telefono:
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="telephone" class="form-control" data-ng-model="modalOptions.mapLocation.telephone" maxlength="50" required />
+                        <span class="errorMessage" ng-show="editForm.telephone.$dirty && editForm.telephone.$invalid">
+                            El telefono es requerido
+                        </span>
+                    </div>
+                </div>
+                <br />
+                
+                <div class="row">
+                    <div class="col-md-2">
+                        Horario:
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="open_hours" class="form-control" data-ng-model="modalOptions.mapLocation.open_hours" maxlength="50" required />
+                        <span class="errorMessage" ng-show="editForm.open_hours.$dirty && editForm.open_hours.$invalid">
+                            El Horario es requerido
+                        </span>
+                    </div>
+                </div>
+                <br />
+                
+                <div class="row">
+                    <div class="col-md-2">
+                        Descripcion:
+                    </div>
+                    <div class="col-md-10">
+                        <textarea type="text" name="description" class="form-control" data-ng-model="modalOptions.mapLocation.description" maxlength="1000" required></textarea>
+                        <span class="errorMessage" ng-show="editForm.description.$dirty && editForm.description.$invalid">
+                            La descripcion requerida
+                        </span>
+                        <div>Restan {{1000-category.description.length}} caracteres</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button style="float:left" ng-enabled="$scope.selectedElement" class="btn btn-primary" data-ng-click="modalOptions.openImagesModal();">Administrar Imagenes</button>
+            
+            <button type="button" class="btn" data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</button>
+            <!--button class="btn btn-primary" data-ng-click="modalOptions.ok();" ng-disabled="editForm.$invalid || !editForm.$dirty">{{modalOptions.actionButtonText}}</button-->
+            <button class="btn btn-primary" data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</button>
+        </div>
+    </div>
+</script>
+
+
+
+<script type="text/ng-template" id="mapLocationImages.html">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>{{modalOptions.headerText}}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{modalOptions.bodyText}}</p>
+            
+            <div>
+        <header>
+                <h3>Listado de Imagenes</h3>
+        </header>
+        <br />
+        
+        
+        <div>
+            <images ng-getimages="modalOptions.getImages" ng-getimage="modalOptions.getImage" ng-addimages="modalOptions.addImage" ng-removeimages="modalOptions.removeImage" ng-imagewidth="565" ng-imageheight="364" ng-thumbwidth="240" ng-thumbheight="155"></images>
+        </div>
+            
+        
+        
+    </div>
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn" data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</button>
+            <button class="btn btn-primary" data-ng-click="modalOptions.ok();">{{modalOptions.actionButtonText}}</button>
+        </div>
+    </div>
+</script>

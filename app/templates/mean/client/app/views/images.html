@@ -1,0 +1,77 @@
+<div class="categories view indent" id="images">
+    <div class="container">
+        <header>
+                <h3>Listado de Imagenes</h3>
+        </header>
+        <br />
+        <br />
+        
+        <ul class="nav nav-tabs">
+          <li class="active">
+              <a data-toggle="tab" data-target="#hotel" ng-click="setCurentCategory('#hotel')">Hotel</a></li>
+          <li>
+              <a data-toggle="tab" data-target="#rooms" ng-click="setCurentCategory('#rooms')">Habitaciones</a></li>
+          <li>
+              <a data-toggle="tab" data-target="#services" ng-click="setCurentCategory('#services')">Servicios</a></li>
+          <li>
+              <a data-toggle="tab" data-target="#minas" ng-click="setCurentCategory('#minas')">Minas</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="hotel" class="tab-pane fade in active">
+                <images ng-getimages="categories.hotel.getImages" ng-getimage="categories.hotel.getImage" ng-addimages="categories.hotel.addImage" ng-removeimages="categories.hotel.removeImage" ng-imagewidth="{{imageWidth}}" ng-imageheight="{{imageHeight}}" ng-thumbwidth="{{thumbWidth}}" ng-thumbheight="{{thumbHeight}}"></images>
+            </div>
+            <div id="rooms" class="tab-pane fade">
+                <images ng-getimages="categories.rooms.getImages" ng-getimage="categories.rooms.getImage" ng-addimages="categories.rooms.addImage" ng-removeimages="categories.rooms.removeImage" ng-imagewidth="{{imageWidth}}" ng-imageheight="{{imageHeight}}" ng-thumbwidth="{{thumbWidth}}" ng-thumbheight="{{thumbHeight}}"></images>
+            </div>
+            <div id="services" class="tab-pane fade">
+                <images ng-getimages="categories.services.getImages" ng-getimage="categories.services.getImage" ng-addimages="categories.services.addImage" ng-removeimages="categories.services.removeImage" ng-imagewidth="{{imageWidth}}" ng-imageheight="{{imageHeight}}" ng-thumbwidth="{{thumbWidth}}" ng-thumbheight="{{thumbHeight}}"></images>
+            </div>
+            <div id="minas" class="tab-pane fade">
+                <images ng-getimages="categories.minas.getImages" ng-getimage="categories.minas.getImage" ng-addimages="categories.minas.addImage" ng-removeimages="categories.minas.removeImage" ng-imagewidth="{{imageWidth}}" ng-imageheight="{{imageHeight}}" ng-thumbwidth="{{thumbWidth}}" ng-thumbheight="{{thumbHeight}}"></images>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+<script type="text/ng-template" id="categoryEdit.html">
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <h3>{{modalOptions.headerText}}</h3>
+        </div>
+        <div class="modal-body">
+            <p>{{modalOptions.bodyText}}</p>
+            <form name="editForm" novalidate>
+                <div class="row">
+                    <div class="col-md-2">
+                        Nombre:
+                    </div>
+                    <div class="col-md-10">
+                        <input type="text" name="name" class="form-control" data-ng-model="modalOptions.category.category" maxlength="50" required />
+                        <span class="errorMessage" ng-show="editForm.name.$dirty && editForm.name.$invalid">
+                            El nombre es requerido
+                        </span>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-2">
+                        Descripcion:
+                    </div>
+                    <div class="col-md-10">
+                        <textarea type="text" name="description" class="form-control" data-ng-model="modalOptions.category.description" maxlength="1000" required></textarea>
+                        <span class="errorMessage" ng-show="editForm.description.$dirty && editForm.description.$invalid">
+                            La descripcion requerida
+                        </span>
+                        <div>Restan {{1000-category.description.length}} caracteres</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn" data-ng-click="modalOptions.close()">{{modalOptions.closeButtonText}}</button>
+            <button class="btn btn-primary" data-ng-click="modalOptions.ok();" ng-disabled="editForm.$invalid || !editForm.$dirty">{{modalOptions.actionButtonText}}</button>
+        </div>
+    </div>
+</script>

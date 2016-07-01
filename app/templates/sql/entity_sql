@@ -1,0 +1,94 @@
+<{!
+    var Types={dataTypes:[]};
+    scope.getSqlAttributes=function(attributes){
+        var ret="";
+        var types=Types.dataTypes;
+        angular.forEach(attributes,function(attribute,index){
+            ret+="`"+attribute.name+"` ";
+            ret+=this.getType(attribute);
+            if(attribute.key || attribute.required){
+                ret+=" NOT NULL";
+            }else{
+                ret+=" DEFAULT NULL";
+            }
+            if(attribute.auto){
+                ret+=" AUTO_INCREMENT";
+            }
+            ret+=((index<attributes.length-1)?",\n":"\n");
+    
+        },this);
+        return ret;
+    };
+    
+    scope.getSqlKeys=function(attributes){
+        var ret="";
+        var keys="";
+        var foreignkeys="";
+        var types=Types.dataTypes;
+        angular.forEach(attributes,function(attribute,index){
+            if(attribute.key){
+                ret+=attribute.key+" KEY (`"+attribute.name+"`),\n";
+            }
+            
+    
+        },this);
+        return ret;
+    };
+    
+    scope.getForeignKeys=function(attributes){
+        var ret="";
+        var keys="";
+        var foreignkeys="";
+        var types=Types.dataTypes;
+        var _this=this;
+        angular.forEach(attributes,function(attribute,index){
+            if(attribute.references){
+                var key=_this.getPrimaryKeyFromEntity(attribute.references);
+                ret+="ALTER TABLE  `"+_this.plural(_this.entity.name)+"` ADD FOREIGN KEY (  `"+attribute.name+"` ) REFERENCES  `"+scope.appName+"`.`"+attribute.references+"` (`"+key+"`) ON DELETE CASCADE ON UPDATE CASCADE ;\n"
+            }
+        },this);
+        return ret;
+    };
+    
+    scope.getType=function(attribute){
+        var ret="";
+        var length=attribute.length||2;
+        ret+=(" "+attribute.type+"("+length+")");
+        return ret;
+    };
+    
+    scope.getPrimaryKeyFromEntity=function(_name){
+        var name=_name;
+        var refEntity=null;
+        var ret="";
+        angular.forEach(scope.entities,function(entity,index){
+            if(entity.name==name){
+                refEntity=entity;
+                return true;
+            }
+        },this);
+
+        if(refEntity){
+            angular.forEach(refEntity.attributes,function(attribute,index){
+                if(attribute.key=="PRIMARY"){
+                    ret=attribute.name;
+                    return true;
+                }
+            },this);
+        }
+        
+        return ret;
+    };
+    
+}>
+ 
+USE <{scope.appName}>;
+ 
+CREATE TABLE IF NOT EXISTS `<{scope.plural(scope.entity.name)}>` (
+    <{scope.getSqlAttributes(scope.entity.attributes)}>
+    <{ scope.getSqlKeys(scope.entity.attributes) }>
+);
+<{ scope.getForeignKeys(scope.entity.attributes) }>
+ 
+
+ 
