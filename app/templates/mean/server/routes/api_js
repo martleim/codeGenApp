@@ -18,6 +18,7 @@ var mainPath = "/:<{scope.getMainEntity().name;}>Id/:eltype";
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
+	res.set('Access-Control-Allow-Origin', req.get("Origin"));
     if (req.isAuthenticated())
         return next();
 

@@ -56,7 +56,9 @@
 		
 		function init() {
 			setLoginLogoutText();
-			updataCrudModels();
+			if($scope.isLogged)
+				updataCrudModels();
+			
         }
 		
         init();

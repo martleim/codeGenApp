@@ -1,7 +1,7 @@
 <{!
     scope.getRoutesForEntities=function(url){
         var ret=[];
-		console.log("MANIZE "+url+" "+JSON.stringify(scope.entities));
+		console.log("LOG "+url+" "+JSON.stringify(scope.entities));
         angular.forEach(scope.entities,function(entity){
 		
             scope.entity=entity;

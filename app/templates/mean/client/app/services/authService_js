@@ -6,20 +6,18 @@
         categoriesUrl = UrlConfig.categoriesUrl,
         mapLocationsUrl = UrlConfig.mapLocationsUrl,
         loginUrl = UrlConfig.loginUrl,
-        authKey = null,
+        loggedIn = null,
         factory = {
             user: {
                 isAuthenticated: false
             }
         };
-
-        
-        
+		
         factory.formatRequest=function(data, getHeaders){
 			var headers = getHeaders();
 			headers[ "content-Type" ] = "application/json;charset=UTF-8";//"application/x-www-form-urlencoded";
 			headers[ "accept" ] = "application/json;charset=UTF-8";//"application/x-www-form-urlencoded";
-            headers[ "Authorization" ] = authKey;
+			$http.defaults.withCredentials=loggedIn;
 			
 			/*if ( ! angular.isObject( data ) ) {
 				return( ( data == null ) ? "" : data.toString() );
@@ -40,13 +38,12 @@
 			return( JSON.stringify(data) );
 		}
         $http.defaults.transformRequest=factory.formatRequest;
-		$http.defaults.withCredentials=true;
         
         factory.login = function (email, password) {
-			return $http.post(baseUrl+loginUrl,{email:email, password:password}).then(
+			return $http.post(baseUrl+loginUrl,{email:email, password:password, withCredentials: true}).then(
                 function (results) {
-                    var loggedIn = !results.data.error;
-                    authKey=results.data.apiKey;
+                    loggedIn = results.data.Result=="OK";
+					authKey=results.data.apiKey;
                     changeAuth(loggedIn);
                     return loggedIn;
                 });
@@ -55,7 +52,7 @@
         factory.logout = function () {
             return $http.post(baseUrl + "logout").then(
                 function (results) {
-                    var loggedIn = !results.data.status;
+                    loggedIn = !results.data.Result=="OK";
                     changeAuth(loggedIn);
                     return loggedIn;
                 });

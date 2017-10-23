@@ -26,7 +26,7 @@
                         Entidad Principal:
                     </div>
                     <div class="col-md-10">
-                        <input type="checkbox" name="main" class="" data-ng-model="entity.main" required />
+                        <input type="checkbox" name="main" class="" data-ng-model="entity.main" />
                     </div>
                 </div>
                 <br />
@@ -251,7 +251,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <button style="float:right;margin:5px;" class="btn btn-danger" data-ng-click="navigate('/entities')">Cancelar</button>
-                    <button style="float:right;margin:5px;" type="submit" class="btn btn-primary" data-ng-click="save()" ng-disabled="editForm.$invalid || !editForm.$dirty">{{buttonText}}</button>
+                    <button style="float:right;margin:5px;" type="submit" class="btn btn-primary" data-ng-click="save()" ng-disableds="editForm.$invalid || !editForm.$dirty">{{buttonText}}</button>
                 </div>
             </div>
             <br />
